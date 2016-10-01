@@ -21,14 +21,14 @@ Kobold is released under GNU Lesser General Public License v3.0 or later
 
 ## Building
 
-Usually, you build Kobold with the following commands (starting at project's
+Usually, you build Kobold with the following commands (starting at projects
 folder):
----
-**mkdir** build
-**cd** build
-cmake ..
-make
----
+
+**mkdir** build  
+**cd** build  
+cmake ..  
+make  
+
 
 ### Options
 
