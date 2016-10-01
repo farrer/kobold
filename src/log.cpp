@@ -21,6 +21,12 @@
 #include "log.h"
 #include <stdio.h>
 #include <stdarg.h>
+
+
+#if KOBOLD_HAS_OGRE == 1
+   #include <OGRE/OgreLogManager.h>
+#endif
+
 using namespace Kobold;
 
 /************************************************************************
@@ -29,6 +35,10 @@ using namespace Kobold;
 void Log::setLogLevel(Log::LogLevel level)
 {
    Log::level = level;
+#if KOBOLD_HAS_OGRE == 1
+   Ogre::LogManager::getSingleton().getDefaultLog()->setLogDetail(
+      getLogLevel(level));
+#endif
 }
 
 /************************************************************************
@@ -50,12 +60,65 @@ void Log::add(Log::LogLevel level, const char* format, ...)
       va_list arg;
 
       va_start(arg, format);
+#if KOBOLD_HAS_OGRE == 1
+      /* Print message to buffer */
+      char buf[512];
+      vsnprintf(&buf[0], 512, format, arg);
+      
+      /* Define message level */
+      Ogre::LogMessageLevel messageLevel = getLevel(level);
+      
+      Ogre::LogManager::getSingleton().getDefaultLog()->logMessage(buf, 
+            messageLevel);
+#else
+      /* Direct print message to std::out */
       vprintf(format, arg);
+#endif
       va_end(arg);
 
+#if KOBOLD_HAS_OGRE != 1
       printf("\n");
+#endif
    }
 }
+
+#if KOBOLD_HAS_OGRE == 1
+/************************************************************************
+ *                                getLevel                              *
+ ************************************************************************/
+Ogre::LogMessageLevel Log::getLevel(LogLevel level)
+{
+   switch(level)
+   {
+      case LOG_LEVEL_DEBUG:
+         return Ogre::LML_TRIVIAL;
+      case LOG_LEVEL_ERROR:
+         return Ogre::LML_CRITICAL;
+      default:
+      case LOG_LEVEL_NORMAL:
+         return Ogre::LML_NORMAL;
+   }
+
+}
+
+/************************************************************************
+ *                                getLevel                              *
+ ************************************************************************/
+Ogre::LoggingLevel Log::getLogLevel(LogLevel level)
+{
+   switch(level)
+   {
+      case LOG_LEVEL_DEBUG:
+         return Ogre::LL_BOREME;
+      case LOG_LEVEL_ERROR:
+         return Ogre::LL_LOW;
+      default:
+      case LOG_LEVEL_NORMAL:
+         return Ogre::LL_NORMAL;
+   }
+
+}
+#endif
 
 /************************************************************************
  *                              static memebers                         *

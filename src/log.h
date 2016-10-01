@@ -24,6 +24,10 @@
 #include "kstring.h"
 #include "koboldconfig.h"
 
+#if KOBOLD_HAS_OGRE == 1
+   #include <OGRE/OgreLog.h>
+#endif
+
 namespace Kobold
 {
    /*! The Log abstractor class. Will use Ogre::Log when using OGRE,
@@ -47,6 +51,13 @@ namespace Kobold
          static void add(LogLevel level, const char* format, ...);
 
       private:
+
+#if KOBOLD_HAS_OGRE == 1
+         /*! Convert Kobold log level to ogre's */
+         static Ogre::LogMessageLevel getLevel(LogLevel level);
+         static Ogre::LoggingLevel getLogLevel(LogLevel level);
+#endif
+
          Log(){};
          
          static LogLevel level;
