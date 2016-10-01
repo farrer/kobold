@@ -27,7 +27,7 @@ folder):
 **mkdir** build  
 **cd** build  
 cmake ..  
-make
+make  
 make install (or sudo make install)
 
 ### Building for Android
