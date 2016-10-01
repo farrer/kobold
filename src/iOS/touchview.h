@@ -1,6 +1,6 @@
 /*
  Kobold - Multiplatform Game Utility Library
- Copyright (C) DNTeam <goblin@dnteam.org>
+ Copyright (C) DNTeam <kobold@dnteam.org>
  
  This file is part of Kobold.
  
