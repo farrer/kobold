@@ -6,6 +6,7 @@ src/keyboard.cpp
 src/kstring.cpp
 src/list.cpp
 src/log.cpp
+src/multitouchcontroller.cpp
 src/network.cpp
 src/oggstream.cpp
 src/parallelprocess.cpp
@@ -26,6 +27,7 @@ src/keycodes.h
 src/kstring.h
 src/list.h
 src/log.h
+src/multitouchcontroller.h
 src/network.h
 src/oggstream.h
 src/parallelprocess.h
