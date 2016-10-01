@@ -18,8 +18,8 @@
  along with Kobold.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _goblin_target_h
-#define _goblin_target_h
+#ifndef _kobold_target_h
+#define _kobold_target_h
 
 namespace Kobold
 {
