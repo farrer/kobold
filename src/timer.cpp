@@ -21,25 +21,90 @@
 #include "timer.h"
 #include "platform.h"
 
-#include <SDL2/SDL.h>
+#if KOBOLD_PLATFORM != KOBOLD_PLATFORM_ANDROID && \
+    KOBOLD_PLATFORM != KOBOLD_PLATFORM_IOS
+   #include <SDL2/SDL.h>
+#else
+   #include "errno.h"
+   #include <sys/time.h>
+   #include <sys/select.h>
+#endif
 
 namespace Kobold
 {
+
+static struct timeval ticks_start;
+static bool started_ticks = false;
+
+/***********************************************************************
+ *                           timer_getTicks()                          *
+ ***********************************************************************/
+unsigned long timer_getTicks()
+{
+#if KOBOLD_PLATFORM != KOBOLD_PLATFORM_ANDROID && \
+    KOBOLD_PLATFORM != KOBOLD_PLATFORM_IOS
+   return SDL_GetTicks();
+#else
+   if(!started_ticks)
+   {
+      started_ticks = true;
+      gettimeofday(&ticks_start, NULL);
+      return 0;
+   }
+
+   unsigned long ticks;
+   struct timeval now;
+   gettimeofday(&now, NULL);
+   ticks = (now.tv_sec - ticks_start.tv_sec) * 1000 + 
+           (now.tv_usec - ticks_start.tv_usec) / 1000;
+   return ticks;
+#endif
+}
 
 /***********************************************************************
  *                              timer_Delay                            *
  ***********************************************************************/
 void timer_Delay(unsigned int ms)
 {
+#if KOBOLD_PLATFORM != KOBOLD_PLATFORM_ANDROID && \
+    KOBOLD_PLATFORM != KOBOLD_PLATFORM_IOS
    SDL_Delay(ms);
+#else
+   int was_error;
+   struct timeval tv;
+   unsigned long then, now, elapsed;
+
+   /* Set the timeout interval */
+   then = timer_getTicks();
+
+   do 
+   {
+      errno = 0;
+
+      /* Calculate the time interval left (in case of interrupt) */
+      now = timer_getTicks();
+      elapsed = (now-then);
+      then = now;
+      if(elapsed >= ms) 
+      {
+         break;
+      }
+      ms -= elapsed;
+      tv.tv_sec = ms/1000;
+      tv.tv_usec = (ms%1000)*1000;
+
+      was_error = select(0, NULL, NULL, NULL, &tv);
+   } while(was_error && (errno == EINTR));
+#endif
 }
+
    
 /***********************************************************************
  *                             Constructor                             *
  ***********************************************************************/
 Timer::Timer()
 {
-   ticks = SDL_GetTicks();
+   ticks = timer_getTicks();
    acumulated = 0;
    paused = false;
 }
@@ -59,7 +124,7 @@ void Timer::pause()
    if(!paused)
    {
       paused = true;
-      acumulated += SDL_GetTicks() - ticks;
+      acumulated += timer_getTicks() - ticks;
    }
 }
   
@@ -77,7 +142,7 @@ bool Timer::isPaused()
 void Timer::resume()
 {
    paused = false;
-   ticks = SDL_GetTicks();
+   ticks = timer_getTicks();
 }
 
 /***********************************************************************
@@ -87,7 +152,7 @@ void Timer::reset()
 {
    paused = false;
    acumulated = 0;
-   ticks = SDL_GetTicks();
+   ticks = timer_getTicks();
 }
 
 /***********************************************************************
@@ -97,7 +162,7 @@ void Timer::reset(unsigned long ms)
 {
    paused = false;
    acumulated = ms;
-   ticks = SDL_GetTicks();
+   ticks = timer_getTicks();
 }
 
 /***********************************************************************
@@ -105,7 +170,7 @@ void Timer::reset(unsigned long ms)
  ***********************************************************************/
 unsigned long Timer::getMilliseconds()
 {
-   unsigned long passed = SDL_GetTicks() - ticks;
+   unsigned long passed = timer_getTicks() - ticks;
 
    if(!paused)
    {

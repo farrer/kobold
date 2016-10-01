@@ -1,5 +1,5 @@
 
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.3)
 
 # Define project and its current version
 set(PACKAGE kobold)
@@ -29,16 +29,23 @@ if(UNIX)
 endif(UNIX)
 
 # Find mandatory packages
-FIND_PACKAGE(SDL2 REQUIRED)
-include_directories(${SDL2_INCLUDE_DIR})
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Android")
+   set(STATIC_BUILD True)
+    FIND_PACKAGE(Tremor REQUIRED)
+   include_directories(${VORBISFILE_INCLUDE_DIR})
+else(${CMAKE_SYSTEM_NAME} STREQUAL "Android")
+   FIND_PACKAGE(SDL2 REQUIRED)
+   include_directories(${SDL2_INCLUDE_DIR})
+   FIND_PACKAGE(Vorbis REQUIRED)
+   include_directories(${VORBIS_INCLUDE_DIR})
+   FIND_PACKAGE(Vorbisfile REQUIRED)
+   include_directories(${VORBISFILE_INCLUDE_DIR})
+endif(${CMAKE_SYSTEM_NAME} STREQUAL "Android")
+
 FIND_PACKAGE(OpenAL REQUIRED)
 include_directories(${OPENAL_INCLUDE_DIR})
 FIND_PACKAGE(Ogg REQUIRED)
 include_directories(${OGG_INCLUDE_DIR})
-FIND_PACKAGE(Vorbis REQUIRED)
-include_directories(${VORBIS_INCLUDE_DIR})
-FIND_PACKAGE(Vorbisfile REQUIRED)
-include_directories(${VORBISFILE_INCLUDE_DIR})
 
 # Find optional packages
 FIND_PACKAGE(OGRE)

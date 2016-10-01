@@ -38,16 +38,16 @@
    #include <AL/al.h>
 #endif
 
+#include <ogg/ogg.h>
+
 #if KOBOLD_PLATFORM != KOBOLD_PLATFORM__IOS && \
     KOBOLD_PLATFORM != KOBOLD_PLATFORM_ANDROID
-   #include <ogg/ogg.h>
    #include <vorbis/codec.h>
    #include <vorbis/vorbisenc.h>
    #include <vorbis/vorbisfile.h> 
 #else
-   #include "../ogg/ogg.h"
-   #include "../tremor/ivorbiscodec.h"
-   #include "../tremor/ivorbisfile.h"
+   #include <tremor/ivorbiscodec.h>
+   #include <tremor/ivorbisfile.h>
 #endif
 
 #include "soundstream.h"

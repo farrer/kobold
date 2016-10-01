@@ -22,6 +22,10 @@
 
 using namespace Kobold;
 
+#if KOBOLD_PLATFORM != KOBOLD_PLATFORM_ANDROID && \
+    KOBOLD_PLATFORM != KOBOLD_PLATFORM_IOS
+
+
 #define KEYBOARD_UPDATE_RATE  80
 
 /*****************************************************************
@@ -173,3 +177,4 @@ const Uint8* Keyboard::keys = NULL;
 KeyboardTextEditor* Keyboard::editor = NULL;
 Uint32 Keyboard::lastKeyCheck = 0;
 
+#endif

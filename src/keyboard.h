@@ -21,6 +21,11 @@
 #ifndef _kobold_keyboard_h
 #define _kobold_keyboard_h
 
+#include "platform.h"
+
+#if KOBOLD_PLATFORM != KOBOLD_PLATFORM_ANDROID && \
+    KOBOLD_PLATFORM != KOBOLD_PLATFORM_IOS
+
 #include <SDL2/SDL.h>
 #include "koboldconfig.h"
 #include "kstring.h"
@@ -95,6 +100,7 @@ class Keyboard
 
 }
 
+#endif
 
 #endif
 
