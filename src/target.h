@@ -24,7 +24,7 @@
 namespace Kobold
 {
 
-#define TARGET_DEFAULT_STEPS  20
+#define TARGET_DEFAULT_STEPS  10
 
 /*! The Target class represents a single float value that
  * will modify to a Target value with some updates. */
