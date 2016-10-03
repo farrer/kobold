@@ -48,6 +48,9 @@ namespace Kobold
 
          /*! \return if s ends with character c */
          static bool endsWith(String s, char c);
+
+         /*! Convert an integer value to string */
+         static String toString(int val);
       private:
          StringUtil(){};
    };

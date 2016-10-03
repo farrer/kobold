@@ -19,6 +19,14 @@
 */
 
 #include "kstring.h"
+
+#if KOBOLD_HAS_OGRE == 1
+   #include <OGRE/OgreStringConverter.h>
+#else
+   #include <sstream>
+   #include <string>
+#endif
+
 using namespace Kobold;
 
 /************************************************************************
@@ -55,6 +63,21 @@ String StringUtil::toLowerCase(String s)
    std::transform(ret.begin(), ret.end(), ret.begin(), ::tolower);
    return ret;
 #endif
+}
+
+/************************************************************************
+ *                              toLowerCase                             *
+ ************************************************************************/
+String StringUtil::toString(int val)
+{
+#if KOBOLD_HAS_OGRE == 1
+  return Ogre::StringConverter::toString(val);
+#else
+  std::ostringstream s;
+  s << val;
+  return s.str();
+#endif
+
 }
 
 /************************************************************************
