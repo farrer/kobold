@@ -42,6 +42,10 @@ namespace Kobold
             LOG_LEVEL_ERROR
          };
 
+         /*! Init the log system.
+          * \param useOgre if should use OgreLog if available */
+         static void init(bool useOgre);
+
          /*! Define log level to use
           * \param level new log level to use */
          static void setLogLevel(LogLevel level);
@@ -60,7 +64,8 @@ namespace Kobold
 
          Log(){};
          
-         static LogLevel level;
+         static LogLevel level; /**< Current log level */
+         static bool useOgre;   /**< If should use ogre log */
    };
 }
 

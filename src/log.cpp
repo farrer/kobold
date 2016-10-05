@@ -30,14 +30,25 @@
 using namespace Kobold;
 
 /************************************************************************
+ *                                  init                                *
+ ************************************************************************/
+void Log::init(bool useOgre)
+{
+   Log::useOgre = useOgre;
+}
+
+/************************************************************************
  *                               setLogLevel                            *
  ************************************************************************/
 void Log::setLogLevel(Log::LogLevel level)
 {
    Log::level = level;
 #if KOBOLD_HAS_OGRE == 1
-   Ogre::LogManager::getSingleton().getDefaultLog()->setLogDetail(
-      getLogLevel(level));
+   if(useOgre)
+   {
+      Ogre::LogManager::getSingleton().getDefaultLog()->setLogDetail(
+         getLogLevel(level));
+   }
 #endif
 }
 
@@ -61,24 +72,32 @@ void Log::add(Log::LogLevel level, const char* format, ...)
 
       va_start(arg, format);
 #if KOBOLD_HAS_OGRE == 1
-      /* Print message to buffer */
-      char buf[512];
-      vsnprintf(&buf[0], 512, format, arg);
-      
-      /* Define message level */
-      Ogre::LogMessageLevel messageLevel = getLevel(level);
-      
-      Ogre::LogManager::getSingleton().getDefaultLog()->logMessage(buf, 
-            messageLevel);
-#else
-      /* Direct print message to std::out */
-      vprintf(format, arg);
+      if(useOgre)
+      {
+         /* Print message to buffer */
+         char buf[512];
+         vsnprintf(&buf[0], 512, format, arg);
+
+         /* Define message level */
+         Ogre::LogMessageLevel messageLevel = getLevel(level);
+
+         Ogre::LogManager::getSingleton().getDefaultLog()->logMessage(buf, 
+               messageLevel);
+      } 
+      else
+      {
+#endif
+         /* Direct print message to std::out */
+         vprintf(format, arg);
+#if KOBOLD_HAS_OGRE == 1
+      }
 #endif
       va_end(arg);
 
-#if KOBOLD_HAS_OGRE != 1
-      printf("\n");
-#endif
+      if(!useOgre)
+      {
+         printf("\n");
+      }
    }
 }
 
@@ -124,4 +143,5 @@ Ogre::LoggingLevel Log::getLogLevel(LogLevel level)
  *                              static memebers                         *
  ************************************************************************/
 Log::LogLevel Log::level = LOG_LEVEL_NORMAL;
+bool Log::useOgre = false;
 
