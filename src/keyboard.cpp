@@ -97,7 +97,12 @@ void Keyboard::updateState()
  *****************************************************************/
 bool Keyboard::isKeyPressed(Kobold::KeyCodes key)
 {
-   return keys[key];
+   if(keys)
+   {
+      return keys[key];
+   }
+
+   return false;
 }
 
 /*****************************************************************
