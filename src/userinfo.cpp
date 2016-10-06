@@ -20,10 +20,9 @@
 
 #include "userinfo.h"
 
-#if KOBOLD_PLATFORM == KOBOLD_PLATFORM_IOS
-   #include <OGRE/iOS/macUtils.h>
-#elif KOBOLD_PLATFORM == KOBOLD_PLATFORM_MACOS
-   #include <OGRE/OSX/macUtils.h>
+#if KOBOLD_PLATFORM == KOBOLD_PLATFORM_IOS ||\
+    KOBOLD_PLATFORM == KOBOLD_PLATFORM_MACOS
+   #include "macutils.h"
 #endif
 
 #if KOBOLD_PLATFORM == KOBOLD_PLATFORM_WIN32

@@ -135,8 +135,6 @@ class SndFx: public ListElement
       /*! Delete the used sound stream */
       void deleteStream();
 
-      int loopInterval;       /**< The sound loop interval */
-
       SoundStream* sndStream; /**< Sound stream used */
       bool removable; /**< if is automatically removable or not */
 };

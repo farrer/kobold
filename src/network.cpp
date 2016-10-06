@@ -121,10 +121,11 @@ int NetCommon::sendData(int sc, void* data, int dataSize)
    /* Only stop sending, when all data weas sent */
    while( sent < dataSize )
    {
-#if KOBOLD_PLATFORM != KOBOLD_PLATFORM_IOS
+#if KOBOLD_PLATFORM != KOBOLD_PLATFORM_IOS &&\
+    KOBOLD_PLATFORM != KOBOLD_PLATFORM_MACOS
       n = send(sc, &caux[sent], dataSize-sent, MSG_NOSIGNAL);
 #else
-      n = send(sc, &caux[sent], dataSize-sent, NULL);
+      n = send(sc, &caux[sent], dataSize-sent, 0);
 #endif
       if( n < 0 )
       {

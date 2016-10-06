@@ -19,15 +19,14 @@
 */
 
 #include "cafstream.h"
+#include "platform.h"
+#include "koboldconfig.h"
+#include "log.h"
 
 #if KOBOLD_PLATFORM == KOBOLD_PLATFORM_MACOS || \
     KOBOLD_PLATFORM == KOBOLD_PLATFORM_IOS
 
-#if KOBOLD_PLATFORM == KOBOLD_PLATFORM_IOS
-   #include <iOS/macUtils.h>
-#else
-   #include <OGRE/OSX/macUtils.h>
-#endif
+#include "macutils.h"
 
 using namespace Kobold;
 
@@ -68,7 +67,7 @@ bool CafStream::_open(Kobold::String fName, ALenum* f, ALuint* sr)
    CFStringEncoding encoding = kCFStringEncodingMacRoman; // =  0;
 	CFAllocatorRef alloc_default = kCFAllocatorDefault;  // = NULL;
    CFStringRef pathC = CFStringCreateWithCString(alloc_default, 
-           ((Ogre::macBundlePath()+Kobold::String("/")+fName).c_str()), encoding);
+           ((macBundlePath()+Kobold::String("/")+fName).c_str()), encoding);
    
    /* Now create the URL Ref (ouch, that's pretty ugly!) */
    CFURLRef fileURL = CFURLCreateWithFileSystemPath(kCFAllocatorDefault,
@@ -81,10 +80,9 @@ bool CafStream::_open(Kobold::String fName, ALenum* f, ALuint* sr)
       CFRelease(pathC);
       CFRelease(fileURL);
       
-      ogreLog->logMessage(Kobold::String("CafStream::open() Couldn't open: '") +
-                          Ogre::macBundlePath() + fName + Kobold::String("'"),
-                          Ogre::LML_CRITICAL);
-      return(false);
+      Log::add(Log::LOG_LEVEL_ERROR, "CafStream::open() Couldn't open: '%s'",
+                          (macBundlePath() + fName).c_str());
+      return false;
    }
    
    /* Clean up string things */
@@ -98,10 +96,10 @@ bool CafStream::_open(Kobold::String fName, ALenum* f, ALuint* sr)
    if( (inputFormat.mChannelsPerFrame > 2) || 
        (inputFormat.mChannelsPerFrame <= 0) )
    {
-      ogreLog->logMessage(Kobold::String("CafStream::open()") +
-                          Kobold::String("Too many channels for '") +
-                          fileName + Kobold::String("'"), Ogre::LML_CRITICAL);
-      return(false);
+      Log::add(Log::LOG_LEVEL_ERROR, 
+               "CafStream::open(): Too many channels for '%s'",
+               fileName.c_str());
+      return false;
    }
    
    /* Set OpenAL Format */
@@ -140,7 +138,7 @@ bool CafStream::_open(Kobold::String fName, ALenum* f, ALuint* sr)
    /* Get the initial read position (to make possible rewinds latter) */
    ExtAudioFileTell(extAudioFile, &initialFrameOffset);
 
-   return(true);
+   return true;
 }
 
 /*************************************************************************
@@ -159,10 +157,10 @@ bool CafStream::_rewind()
    /* Rewind the file */
    if(ExtAudioFileSeek(extAudioFile, initialFrameOffset))
    {
-      ogreLog->logMessage("CAF Rewind Error!", Ogre::LML_CRITICAL);
-      return(false);
+      Log::add(Log::LOG_LEVEL_ERROR, "CAF Rewind Error!");
+      return false;
    }
-   return(true);
+   return true;
 }
 
 /*************************************************************************
@@ -189,9 +187,9 @@ bool CafStream::_getBuffer(unsigned long index, unsigned long readBytes,
    err = ExtAudioFileRead(extAudioFile, &maxFrames, &dataBuffer);
    if(err != noErr)
    {
-      ogreLog->logMessage(Kobold::String("Caf Buffer Error!") + 
-                          errorString(err), Ogre::LML_CRITICAL);
-      return(false);
+      Log::add(Log::LOG_LEVEL_ERROR, "CAF buffer error: %s",
+               errorString(err).c_str());
+      return false;
    }
    
    /* Verify frames readed */
@@ -206,7 +204,7 @@ bool CafStream::_getBuffer(unsigned long index, unsigned long readBytes,
       *gotEof = true;
    }
    
-   return(true);
+   return true;
    
 }
 

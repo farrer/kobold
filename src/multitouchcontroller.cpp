@@ -24,7 +24,7 @@
 #if KOBOLD_HAS_OGRE == 1
    #include <OGRE/OgreMath.h>
 #else
-   #include <math.h>
+   #include <stdlib.h>
 #endif
 
 using namespace Kobold;
@@ -214,7 +214,7 @@ void MultiTouchController::touchMoved(int prevX, int prevY, int x, int y)
       if((Ogre::Math::Abs(x-prevX) > 2.0f) ||
          (Ogre::Math::Abs(y-prevY) > 2.0f) )
 #else
-      if((fabs(x-prevX) > 2.0f) || (fabs(y-prevY) > 2.0f) )
+      if((abs(x - prevX) > 2) || (abs(y - prevY) > 2) )
 #endif
       {
          t->info.state = TOUCH_MOVED;
