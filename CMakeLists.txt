@@ -28,6 +28,11 @@ if(UNIX)
    endif(${KOBOLD_DEBUG})
 endif(UNIX)
 
+if(APPLE)
+   set(KOBOLD_STATIC True)
+   set(OGRE_STATIC True)
+endif(APPLE)
+
 # Find mandatory packages
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Android")
    set(KOBOLD_STATIC True)
@@ -87,4 +92,13 @@ set_target_properties(kobold PROPERTIES VERSION ${VERSION}
 install(FILES ${KOBOLD_CONFIG_FILE} DESTINATION include/kobold)
 install(FILES ${KOBOLD_HEADERS} DESTINATION include/kobold)
 install(TARGETS kobold DESTINATION lib)
+
+message("\n**********************************************")
+message("Kobold build: ")
+if(${KOBOLD_STATIC})
+   message("   Static library")
+else(${KOBOLD_STATIC})
+   message("   Shared library")
+endif(${KOBOLD_STATIC})
+message("**********************************************\n")
 
