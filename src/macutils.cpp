@@ -18,10 +18,12 @@
  along with Kobold.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "platform.h"
+
 #if KOBOLD_PLATFORM == KOBOLD_PLATFORM_MACOS || \
     KOBOLD_PLATFORM == KOBOLD_PLATFORM_IOS
 
-#include "macUtils.h"
+#include "macutils.h"
 
 #if KOBOLD_HAS_OGRE == 1 
    #if KOBOLD_PLATFORM == KOBOLD_PLATFORM_IOS
