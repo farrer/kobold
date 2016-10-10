@@ -7,6 +7,7 @@ src/kstring.cpp
 src/list.cpp
 src/log.cpp
 src/macutils.cpp
+src/mouse.cpp
 src/multitouchcontroller.cpp
 src/network.cpp
 src/oggstream.cpp
@@ -29,6 +30,7 @@ src/kstring.h
 src/list.h
 src/log.h
 src/macutils.h
+src/mouse.h
 src/multitouchcontroller.h
 src/network.h
 src/oggstream.h
