@@ -21,7 +21,7 @@
 #ifndef _kobold_mouse_h
 #define _kobold_mouse_h
 
-#include <kobold/platform.h>
+#include "platform.h"
 
 #if KOBOLD_PLATFORM != KOBOLD_PLATFORM_IOS &&\
     KOBOLD_PLATFORM != KOBOLD_PLATFORM_ANDROID
