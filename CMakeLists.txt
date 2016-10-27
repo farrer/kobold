@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.3)
 
 # Define project and its current version
 set(PACKAGE kobold)
+project(kobold)
 
 set(VERSION_MAJOR 1)
 set(VERSION_MINOR 0)
@@ -34,14 +35,24 @@ if(APPLE)
 endif(APPLE)
 
 # Find mandatory packages
-if(${CMAKE_SYSTEM_NAME} STREQUAL "Android")
+if(${IOS})
+   set(XCODE_ATTTRIBUTE_SDKROOT iphoneos)
+   set(CMAKE_OSX_SYSROOT iphoneos)
+   set(CMAKE_OSX_ARCHITETURES "$(ARCHS_STANDARD_32_BIT)")
+   set(CMAKE_EXE_LINKER_FLAGS "-framework Foundation -framework CoreGraphics -framework QuartzCore -framework UIKit")
    set(KOBOLD_STATIC True)
    set(OGRE_STATIC True)
-   set(ANDROID True)
-else(${CMAKE_SYSTEM_NAME} STREQUAL "Android")
-   FIND_PACKAGE(SDL2 REQUIRED)
-   include_directories(${SDL2_INCLUDE_DIR})
-endif(${CMAKE_SYSTEM_NAME} STREQUAL "Android")
+   set(IOS True)
+else(${IOS})
+   if(${CMAKE_SYSTEM_NAME} STREQUAL "Android")
+      set(KOBOLD_STATIC True)
+      set(OGRE_STATIC True)
+      set(ANDROID True)
+   else(${CMAKE_SYSTEM_NAME} STREQUAL "Android")
+      FIND_PACKAGE(SDL2 REQUIRED)
+      include_directories(${SDL2_INCLUDE_DIR})
+   endif(${CMAKE_SYSTEM_NAME} STREQUAL "Android")
+endif(${IOS})
 
 # Find optional packages
 FIND_PACKAGE(OGRE)

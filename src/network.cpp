@@ -115,7 +115,7 @@ bool NetCommon::resolvAddress(string addr, struct in_addr* resolvedAddr)
 int NetCommon::sendData(int sc, void* data, int dataSize)
 {
    int sent = 0;
-   int n;
+   ssize_t n;
    char* caux = (char*) data;
 
    /* Only stop sending, when all data weas sent */
@@ -132,7 +132,7 @@ int NetCommon::sendData(int sc, void* data, int dataSize)
          if((errno != EAGAIN) && (errno != EWOULDBLOCK))
          {
             error("Couldn't send data!");
-            return(n);
+            return (int) n;
          }
          /* EAGAIN: try to send again. */
          n = 0; 
@@ -140,11 +140,11 @@ int NetCommon::sendData(int sc, void* data, int dataSize)
       else if(n == 0)
       {
          /* Probably disconnected. */
-         return n;
+         return (int) n;
       }
       sent += n;
    }
-   return(sent);
+   return sent;
 }
 
 /****************************************************************
@@ -154,7 +154,7 @@ int NetCommon::receiveData(int sc, void* data, int dataSize)
 {
    char* caux = (char*) data;
    int received = 0;
-   int n;
+   ssize_t n;
    while( received < dataSize )
    {
       n = recv(sc, caux+received, dataSize-received, 0);

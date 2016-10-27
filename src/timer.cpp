@@ -33,7 +33,7 @@
 namespace Kobold
 {
 
-#if KOBOLD_PLATFORM == KOBOLD_PLATFORM_ANDROID && \
+#if KOBOLD_PLATFORM == KOBOLD_PLATFORM_ANDROID || \
     KOBOLD_PLATFORM == KOBOLD_PLATFORM_IOS
 static struct timeval ticks_start;
 static bool started_ticks = false;

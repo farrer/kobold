@@ -32,6 +32,8 @@
    #include <unistd.h>
    #include <sys/types.h>
    #include <sys/stat.h>
+#else
+   #include <sys/stat.h>
 #endif
 
 #if KOBOLD_PLATFORM != KOBOLD_PLATFORM_WIN32 && \
@@ -78,24 +80,29 @@ void UserInfo::getValuesFromSystem(Kobold::String packageName,
       }
       userTemp = "./";
    #elif KOBOLD_PLATFORM == KOBOLD_PLATFORM_IOS
-      /* Must save things under the Documents folder */
-      userHome = Ogre::iOSDocumentsDirectory();
-      userTemp = Ogre::macTempFileName();
-      userName = "iOS User";
-      /* Get language */
-      CFLocaleRef locale = CFLocaleCopyCurrent();
-      if(locale == NULL)
-      {
-         language = "en";
-      }
-      else
-      {
-         char buf[64];
-         CFStringGetCString(CFLocaleGetIdentifier(locale),
-                            &buf[0], 64, kCFStringEncodingASCII);
-         language = buf[0];
-         language += buf[1];
-      }
+   
+      #if KOBOLD_HAS_OGRE == 1
+         /* Must save things under the Documents folder */
+         userHome = Ogre::iOSDocumentsDirectory();
+         userTemp = Ogre::macTempFileName();
+         userName = "iOS User";
+         /* Get language */
+         CFLocaleRef locale = CFLocaleCopyCurrent();
+         if(locale == NULL)
+         {
+            language = "en";
+         }
+         else
+         {
+            char buf[64];
+            CFStringGetCString(CFLocaleGetIdentifier(locale),
+                               &buf[0], 64, kCFStringEncodingASCII);
+            language = buf[0];
+            language += buf[1];
+         }
+      #else
+         //TODO!
+      #endif
    #elif KOBOLD_PLATFORM != KOBOLD_PLATFORM_ANDROID
       language = "en";
       /* Get all Current User's Info (so more clean, isn't it?) */
