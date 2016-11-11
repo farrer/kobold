@@ -1,17 +1,20 @@
 language: cpp
 sudo: required
 compiler:
-- clang
-- gcc
+   - clang
+   - gcc
 os:
-- linux 
+   - linux 
 script:
-- mkdir build 
-- cd build 
-- cmake ..
-- make
+   - mkdir build 
+   - cd build 
+   - cmake ..
+   - make
 before_script:
-#install cmake
-- if [ "$TRAVIS_OS_NAME" = "linux" ]; then wget http://www.cmake.org/files/v3.3/cmake-3.3.2-Linux-x86_64.tar.gz -O cmake.tar.gz; fi
-- if [ "$TRAVIS_OS_NAME" = "linux" ]; then tar -xzf cmake.tar.gz -C $HOME; fi
-- if [ "$TRAVIS_OS_NAME" = "linux" ]; then export PATH=$HOME/cmake-3.3.2-Linux-x86_64/bin:$PATH; fi
+   #install newer cmake
+   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then wget http://www.cmake.org/files/v3.3/cmake-3.3.2-Linux-x86_64.tar.gz -O cmake.tar.gz; fi
+   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then tar -xzf cmake.tar.gz -C $HOME; fi
+   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then export PATH=$HOME/cmake-3.3.2-Linux-x86_64/bin:$PATH; fi
+before_install:
+   - sudo apt-get -qq update
+   - sudo apt-get install -y libsdl2-dev libsdl2-image-dev libfreetype6-dev
