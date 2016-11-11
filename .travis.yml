@@ -17,4 +17,9 @@ before_script:
    - if [ "$TRAVIS_OS_NAME" = "linux" ]; then export PATH=$HOME/cmake-3.3.2-Linux-x86_64/bin:$PATH; fi
 before_install:
    - sudo apt-get -qq update
-   - sudo apt-get install -y libsdl2-dev libsdl2-image-dev libfreetype6-dev
+   - sudo apt-get install -y libfreetype6-dev
+
+   - wget http://www.libsdl.org/release/SDL2-2.0.3.tar.gz -O - | tar xz
+   - (cd SDL2-2.0.3 && ./configure --prefix=/usr && sudo make -j5 && sudo make install)
+    - wget http://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.0.tar.gz -O - | tar xz
+    - (cd SDL2_image-2.0.0 && ./configure --prefix=/usr && sudo make -j5 && sudo make install)
