@@ -28,7 +28,7 @@ before_install:
    - cd ..
    - wget http://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.1.tar.gz
    - tar xzf SDL2_image-2.0.1.tar.gz
-   - cd SDL2_image-2.0.0 
+   - cd SDL2_image-2.0.1 
    - ./configure --prefix=/usr 
    - sudo make -j5 
    - sudo make install
