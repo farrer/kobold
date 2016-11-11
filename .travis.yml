@@ -19,6 +19,11 @@ before_install:
    - sudo apt-get -qq update
    - sudo apt-get install -y libfreetype6-dev
 
+   # workaround for Clang
+   - $CC --version
+   - which $CC
+   - export CC=`which $CC`
+
    - wget http://www.libsdl.org/release/SDL2-2.0.5.tar.gz
    - tar xzf SDL2-2.0.5.tar.gz
    - cd SDL2-2.0.5
