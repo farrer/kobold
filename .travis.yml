@@ -1,0 +1,8 @@
+language: cpp
+sudo: required
+compiler:
+- clang
+- gcc
+os:
+- linux 
+script: cmake
