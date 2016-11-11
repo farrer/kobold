@@ -32,3 +32,4 @@ before_install:
    - ./configure --prefix=/usr 
    - sudo make -j5 
    - sudo make install
+   - cd ..
