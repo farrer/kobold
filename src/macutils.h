@@ -21,12 +21,21 @@
 #ifndef _kobold_mac_utils_h
 #define _kobold_mac_utils_h
 
+#include "platform.h"
+
 #if KOBOLD_PLATFORM == KOBOLD_PLATFORM_MACOS || \
     KOBOLD_PLATFORM == KOBOLD_PLATFORM_IOS
 
 #include "koboldconfig.h"
-#include "platform.h"
 #include "kstring.h"
+
+#if KOBOLD_HAS_OGRE == 1
+   #if KOBOLD_PLATFORM == KOBOLD_PLATFORM_IOS
+      #include <iOS/macUtils.h>
+   #else
+      #include <OGRE/OSX/macUtils.h>
+   #endif
+#endif
 
 namespace Kobold
 {

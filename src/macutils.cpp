@@ -35,12 +35,10 @@
    #include <CoreFoundation/CoreFoundation.h>
 #endif
 
-using namespace Kobold;
-
 /**********************************************************************
  *                            macBundlePath                           *
  **********************************************************************/
-Kobold::String macBundlePath()
+Kobold::String Kobold::macBundlePath()
 {
 #if KOBOLD_HAS_OGRE == 1
    return Ogre::macBundlePath(); 
