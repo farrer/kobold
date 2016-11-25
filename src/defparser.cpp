@@ -181,7 +181,7 @@ bool DefParser::load(Kobold::String fileName, bool fullPath,
    int line;
 
    /* Clear any previous loaded tuples. */
-   clear();
+   doClear();
 
    /* Open the Definition File */
    if(fullPath)
