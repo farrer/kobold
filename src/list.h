@@ -85,6 +85,7 @@ class List
 
       /*! Clear all List elements */
       void clearList();
+      void clear();
 
       /*! Insert an element on the List, at the default position
        * \param obj -> object to insert

@@ -70,7 +70,7 @@ TouchesList::TouchesList():Kobold::List(Kobold::LIST_TYPE_ADD_AT_END)
  ********************************************************************/
 TouchesList::~TouchesList()
 {
-   clearList();
+   clear();
 }
 
 /********************************************************************

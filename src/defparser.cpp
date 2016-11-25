@@ -114,7 +114,7 @@ DefParser::~DefParser()
  ***********************************************************************/
 void DefParser::clear()
 {
-   clearList();
+   clear();
    curTuple = NULL;
 }
 
