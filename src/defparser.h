@@ -90,7 +90,7 @@ class DefParser : public List
    protected:
 
       /** Clear and delete all created structures */
-      void clear();
+      void doClear();
 
       /*! Insert a tuple into linked list
        * \param key -> tuple key
