@@ -24,8 +24,8 @@
 namespace Kobold
 {
 
-#define PACKAGE "@PACKAGE@"
-#define VERSION "@VERSION@"
+#define KOBOLD_PACKAGE "@PACKAGE@"
+#define KOBOLD_VERSION "@VERSION@"
 #define KOBOLD_HAS_OGRE @KOBOLD_HAS_OGRE@
 
 }
