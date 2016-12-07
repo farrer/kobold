@@ -59,7 +59,7 @@ class ListElement
        * \param obj -> pointer to the previous element on the List */
       void setPrevious(ListElement* obj);
 
-   protected:
+   private:
 
       ListElement* next;           /**< Next on List */
       ListElement* previous;       /**< Previous on List */
@@ -135,12 +135,10 @@ class List
        * \return pointer to the last element of list. */
       ListElement* getLast();
 
-   protected:
+   private:
 
       ListElement* first;             /**< Pointer to the first List element */
       int total;                      /**< Total elements on the List */
-
-   private:
       int listType;                   /**< List type (FIFO, LIFO) */
 };
 

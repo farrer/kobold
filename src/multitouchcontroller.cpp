@@ -79,15 +79,15 @@ TouchesList::~TouchesList()
 Touch* TouchesList::getTouch(int x, int y)
 {
    int i;
-   Touch* t = (Touch*)first;
+   Touch* t = static_cast<Touch*>(getFirst());
    
-   for(i=0; i < total; i++)
+   for(i=0; i < getTotal(); i++)
    {
       if( (t->info.x == x) && (t->info.y == y) )
       {
          return t;
       }
-      t = (Touch*)t->getNext();
+      t = static_cast<Touch*>(t->getNext());
    }
    return NULL;
 }
@@ -311,11 +311,11 @@ void MultiTouchController::update()
    if(touches->getTotal() > 0)
    {
       /* Copy info to 'public' vector.  */
-      Touch* curTouch = (Touch*) touches->getFirst();
+      Touch* curTouch = static_cast<Touch*>(touches->getFirst());
       for(int i = 0; i < touches->getTotal(); i++)
       {
          threatTouches[i] = curTouch->info;
-         curTouch = (Touch*) curTouch->getNext();
+         curTouch = static_cast<Touch*>(curTouch->getNext());
       }
 
       clearStates();
@@ -337,18 +337,20 @@ void MultiTouchController::clearStates()
       /* No touches, do nothing */
       return;
    }
-   t = (Touch*)touches->getFirst();
+   t = static_cast<Touch*>(touches->getFirst());
    
    do 
    {
       aux = t;
-      t = (Touch*)t->getNext();
+      t = static_cast<Touch*>(t->getNext());
       if(aux->info.state == TOUCH_RELEASED)
       {
          /* Released: no more touch. */
          touches->remove(aux);
       }
-   }while( (touches->getTotal() > 0) && (t != (Touch*)touches->getFirst()));
+   }
+   while( (touches->getTotal() > 0) && 
+          (t != static_cast<Touch*>(touches->getFirst())));
 }
 
 /********************************************************************
