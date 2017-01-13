@@ -125,7 +125,7 @@ class List
 
        /*! Get total elements on the List
        * \return total elements on the List */
-      int getTotal();
+      const int getTotal() const { return total; };
 
       /*! Get the first element
        * \return pointer to the first element */
