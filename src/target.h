@@ -49,12 +49,12 @@ class Target
       void update();
 
       /*! Verify if Target needs to update or not */
-      bool needUpdate();
+      const bool needUpdate() const { return nUpdate; };
       /*! Get the current value */
-      float getValue();
+      const float getValue() const { return current; };
 
       /*! Get the last delta used to update Target */
-      float getLastDelta();
+      const float getLastDelta() const { return lastDelta; };
 
       /*! Get current target, if any, or value if none */
       float getTarget();
