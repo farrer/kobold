@@ -135,6 +135,11 @@ class List
        * \return pointer to the last element of list. */
       ListElement* getLast();
 
+      /*! Verify if an element is at the list or not
+       * \param obj element to verify
+       * \return if at list or not */
+      bool hasElement(ListElement* obj);
+
    private:
 
       ListElement* first;             /**< Pointer to the first List element */

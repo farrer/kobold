@@ -284,5 +284,23 @@ ListElement* List::getLast()
    return NULL;
 }
 
+/***********************************************************************
+ *                              hasElement                             *
+ ***********************************************************************/
+bool List::hasElement(ListElement* obj)
+{
+   ListElement* el = first;
+   for(int i = 0; i < total; i++)
+   {
+      if(el == obj)
+      {
+         return true;
+      }
+      el = el->getNext();
+   }
+
+   return false;
+}
+
 }
 
