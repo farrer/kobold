@@ -11,6 +11,7 @@ src/multitouchcontroller.cpp
 src/mutex.cpp
 src/network.cpp
 src/parallelprocess.cpp
+src/readwritelock.cpp
 src/target.cpp
 src/timer.cpp
 src/userinfo.cpp
@@ -31,6 +32,7 @@ src/mutex.h
 src/network.h
 src/parallelprocess.h
 src/platform.h
+src/readwritelock.h
 src/target.h
 src/timer.h
 src/userinfo.h
