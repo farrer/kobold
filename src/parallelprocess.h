@@ -46,23 +46,23 @@ class ParallelProcess
       /*! Get the ammount of time (in ms) to sleep after each step */
       virtual unsigned int getSleepTime()=0;
    
-      /*! Create a thread with the server loop */
+      /*! Create a thread with the parallel loop */
       void createThread();
    
       /*! End the thread with the server loop */
       void endThread();
    
-      /*! If the server is running on a separate thread. */
+      /*! If the parallel thread is running. */
       bool isRunning();
    
-      /* Tell that the thread ended.
-       * \note only usefull inner the server thread. */
+      /* Tells that the thread ended.
+       * \note usually only internally called by the proccess procedure. */
       void threadEnded();
    
    private:
    
-      bool threadRunning;                 /**< if is running at a thread */
-      pthread_t thread;                   /**< thread */
+      bool threadRunning;          /**< if the thread is running */
+      pthread_t thread;            /**< The thread itself */
       pthread_mutex_t threadMutex; /**< Mutex for thread running check */
    
 };

@@ -124,3 +124,4 @@ void ParallelProcess::threadEnded()
    threadRunning = false;
    pthread_mutex_unlock(&threadMutex);
 }
+
