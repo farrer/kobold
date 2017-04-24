@@ -8,6 +8,7 @@ src/log.cpp
 src/macutils.cpp
 src/mouse.cpp
 src/multitouchcontroller.cpp
+src/mutex.cpp
 src/network.cpp
 src/parallelprocess.cpp
 src/target.cpp
@@ -26,6 +27,7 @@ src/log.h
 src/macutils.h
 src/mouse.h
 src/multitouchcontroller.h
+src/mutex.h
 src/network.h
 src/parallelprocess.h
 src/platform.h

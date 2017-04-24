@@ -67,6 +67,12 @@ else(${OGRE_FOUND})
    set(KOBOLD_HAS_OGRE 0)
 endif(${OGRE_FOUND})
 
+if(${SDL2_FOUND})
+   set(KOBOLD_HAS_SDL 1)
+else(${SDL2_FOUND})
+   set(KOBOLD_HAS_SDL 0)
+endif(${SDL2_FOUND})
+
 # Include directories: src and the binary src (as generating config.h there)
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/src)

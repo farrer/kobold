@@ -22,7 +22,14 @@
 #define _kobold_parallelprocess_h
 
 #include "koboldconfig.h"
-#include <pthread.h>
+
+#if KOBOLD_HAS_SDL == 1
+   #include <SDL2/SDL.h>
+#else
+   #include <pthread.h>
+#endif
+
+#include "mutex.h"
 
 namespace Kobold
 {
@@ -62,8 +69,13 @@ class ParallelProcess
    private:
    
       bool threadRunning;          /**< if the thread is running */
+      Mutex mutex;                 /**< Mutex for thread running check */
+
+#if KOBOLD_HAS_SDL == 1
+      SDL_Thread* thread;          /**< The thread itself */
+#else
       pthread_t thread;            /**< The thread itself */
-      pthread_mutex_t threadMutex; /**< Mutex for thread running check */
+#endif
    
 };
    

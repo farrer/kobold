@@ -19,6 +19,7 @@
  */
 
 #include "parallelprocess.h"
+#include "log.h"
 #include <timer.h>
 
 using namespace Kobold;
@@ -26,7 +27,11 @@ using namespace Kobold;
 /****************************************************************
  *                     parallelProcessThreadProc                *
  ****************************************************************/
+#if KOBOLD_HAS_SDL
+int parallelProcessThreadProc(void* arg)
+#else
 void* parallelProcessThreadProc(void* arg)
+#endif
 {
    ParallelProcess* process = (ParallelProcess*) arg;
    
@@ -42,7 +47,11 @@ void* parallelProcessThreadProc(void* arg)
    
    process->threadEnded();
    
+#if KOBOLD_HAS_SDL
+   return 0;
+#else
    return NULL;
+#endif
 }
 
 /****************************************************************
@@ -51,7 +60,6 @@ void* parallelProcessThreadProc(void* arg)
 ParallelProcess::ParallelProcess()
 {
    threadRunning = false;
-   pthread_mutex_init(&threadMutex, NULL);
 }
 
 /****************************************************************
@@ -63,7 +71,6 @@ ParallelProcess::~ParallelProcess()
    {
       endThread();
    }
-   pthread_mutex_destroy(&threadMutex);
 }
 
 /***********************************************************************
@@ -73,9 +80,9 @@ bool ParallelProcess::isRunning()
 {
    bool res;
    
-   pthread_mutex_lock(&threadMutex);
+   mutex.lock();
    res = threadRunning;
-   pthread_mutex_unlock(&threadMutex);
+   mutex.unlock();
    
    return res;
 }
@@ -89,12 +96,17 @@ void ParallelProcess::createThread()
    {
       endThread();
    }
-   pthread_mutex_lock(&threadMutex);
-   
+   mutex.lock();
+
+#if KOBOLD_HAS_SDL
+   thread = SDL_CreateThread(parallelProcessThreadProc, "koboldParallel", 
+         (void*)this);
+#else
    pthread_create(&thread, NULL, parallelProcessThreadProc, (void*)this);
+#endif
    threadRunning = true;
-   
-   pthread_mutex_unlock(&threadMutex);
+  
+   mutex.unlock();
 }
 
 /***********************************************************************
@@ -102,17 +114,18 @@ void ParallelProcess::createThread()
  ***********************************************************************/
 void ParallelProcess::endThread()
 {
-   pthread_mutex_lock(&threadMutex);
+   mutex.lock();
    if(threadRunning)
    {
       threadRunning = false;
-      pthread_mutex_unlock(&threadMutex);
-      pthread_join(thread, NULL);
    }
-   else
-   {
-      pthread_mutex_unlock(&threadMutex);
-   }
+   mutex.unlock();
+#if KOBOLD_HAS_SDL
+   int ret=0;
+   SDL_WaitThread(thread, &ret);
+#else
+   pthread_join(thread, NULL);
+#endif
 }
 
 /***********************************************************************
@@ -120,8 +133,8 @@ void ParallelProcess::endThread()
  ***********************************************************************/
 void ParallelProcess::threadEnded()
 {
-   pthread_mutex_lock(&threadMutex);
+   mutex.lock();
    threadRunning = false;
-   pthread_mutex_unlock(&threadMutex);
+   mutex.unlock();
 }
 

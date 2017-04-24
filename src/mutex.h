@@ -18,19 +18,44 @@
  along with Kobold.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _kobold_config_h
-#define _kobold_config_h
+#ifndef _kobold_mutex_h
+#define _kobold_mutex_h
+
+#include "koboldconfig.h"
+
+#if KOBOLD_HAS_SDL == 1
+   #include <SDL2/SDL.h>
+#else
+   #include <pthread.h>
+#endif
 
 namespace Kobold
 {
 
-#define KOBOLD_PACKAGE "@PACKAGE@"
-#define KOBOLD_VERSION "@VERSION@"
-#define KOBOLD_HAS_OGRE @KOBOLD_HAS_OGRE@
-#define KOBOLD_HAS_SDL @KOBOLD_HAS_SDL@
+/*! The platform/implementation independent Mutex wrapper. */
+class Mutex
+{
+   public:
+      /*! Mutex contructor */
+      Mutex();
+      /*! Mutex destructor */
+      ~Mutex();
+
+      /*! Lock the mutex, waiting if already locked */
+      void lock();
+      /*! Unlock the locked mutex */
+      void unlock();
+
+   private:
+#if KOBOLD_HAS_SDL == 1
+      SDL_mutex* mutex;      /**< Mutex implemented by SDL */
+#else
+      pthread_mutex_t mutex; /**< Mutex implemented by Posix Thread */
+#endif
+
+};
 
 }
 
 #endif
-
 
