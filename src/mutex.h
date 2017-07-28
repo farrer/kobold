@@ -51,6 +51,7 @@ class Mutex
       SDL_mutex* mutex;      /**< Mutex implemented by SDL */
 #else
       pthread_mutex_t mutex; /**< Mutex implemented by Posix Thread */
+      pthread_mutexattr_t attr; /**< Its attributes */
 #endif
 
 };

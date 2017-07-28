@@ -30,7 +30,10 @@ Mutex::Mutex()
 #if KOBOLD_HAS_SDL == 1
    mutex = SDL_CreateMutex();
 #else
-   pthread_mutex_init(&mutex, NULL);
+   pthread_mutexattr_init(&attr);
+   pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
+
+   pthread_mutex_init(&mutex, &attr);
 #endif
 }
 
@@ -43,6 +46,7 @@ Mutex::~Mutex()
    SDL_DestroyMutex(mutex);
 #else
    pthread_mutex_destroy(&mutex);
+   pthread_mutexattr_destroy(&attr);
 #endif
 }
 
