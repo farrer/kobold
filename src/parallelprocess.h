@@ -50,8 +50,9 @@ class ParallelProcess
        * @return true when continue to run, false to stop. */
       virtual bool step()=0;
    
-      /*! Get the ammount of time (in ms) to sleep after each step */
-      virtual unsigned int getSleepTime()=0;
+      /*! Get the minimum time (in ms) between each step execution.
+       * The thread will avoid to step more often than this time. */
+      virtual unsigned int getExecutionFrequency()=0;
    
       /*! Create a thread with the parallel loop */
       void createThread();

@@ -35,14 +35,21 @@ void* parallelProcessThreadProc(void* arg)
 {
    ParallelProcess* process = (ParallelProcess*) arg;
    
-   unsigned int delayTime = process->getSleepTime();
+   unsigned int freqTime = process->getExecutionFrequency();
+   Kobold::Timer timer;
+   timer.reset();
+   unsigned long timeElapsed;
    
    while(process->isRunning() && (process->step()))
    {
-      if(delayTime != 0)
+      timeElapsed = timer.getMilliseconds();
+      if(timeElapsed < freqTime)
       {
-         Kobold::timer_Delay(delayTime);
+         /* Must sleep until elapsed the remaining time for next step
+          * call. */
+         Kobold::timer_Delay(freqTime - timeElapsed);
       }
+      timer.reset();
    }
    
    process->threadEnded();
