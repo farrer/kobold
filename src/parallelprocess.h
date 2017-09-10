@@ -64,8 +64,11 @@ class ParallelProcess
       bool isRunning();
    
       /* Tells that the thread ended.
+       * \param endedByStep if it ended by step return value. On this case,
+       *        SDL_DetachThread will be called, and no SDL_WaitThread should 
+       *        be used.
        * \note usually only internally called by the proccess procedure. */
-      void threadEnded();
+      void threadEnded(bool endedByStep);
    
    private:
    

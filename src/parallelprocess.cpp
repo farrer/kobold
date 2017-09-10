@@ -39,11 +39,14 @@ void* parallelProcessThreadProc(void* arg)
    Kobold::Timer timer;
    timer.reset();
    unsigned long timeElapsed;
+
+   bool endedByStep = false;
    
-   while(process->isRunning() && (process->step()))
+   while(process->isRunning() && (!endedByStep))
    {
+      endedByStep = !process->step();
       timeElapsed = timer.getMilliseconds();
-      if(timeElapsed < freqTime)
+      if((timeElapsed < freqTime) && (!endedByStep))
       {
          /* Must sleep until elapsed the remaining time for next step
           * call. */
@@ -51,8 +54,8 @@ void* parallelProcessThreadProc(void* arg)
       }
       timer.reset();
    }
-   
-   process->threadEnded();
+
+   process->threadEnded(endedByStep);
    
 #if KOBOLD_HAS_SDL
    return 0;
@@ -138,10 +141,17 @@ void ParallelProcess::endThread()
 /***********************************************************************
  *                             threadEnded                             *
  ***********************************************************************/
-void ParallelProcess::threadEnded()
+void ParallelProcess::threadEnded(bool endedByStep)
 {
    mutex.lock();
-   threadRunning = false;
+   if(threadRunning)
+   {
+      threadRunning = false;
+      if(endedByStep)
+      {
+         SDL_DetachThread(thread);
+      }
+   }
    mutex.unlock();
 }
 
