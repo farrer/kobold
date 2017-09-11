@@ -149,7 +149,11 @@ void ParallelProcess::threadEnded(bool endedByStep)
       threadRunning = false;
       if(endedByStep)
       {
+#if KOBOLD_HAS_SDL
          SDL_DetachThread(thread);
+#else
+         pthread_detach(thread);
+#endif
       }
    }
    mutex.unlock();
