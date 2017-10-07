@@ -57,7 +57,7 @@ class Target
       const float getLastDelta() const { return lastDelta; };
 
       /*! Get current target, if any, or value if none */
-      float getTarget();
+      const float getTarget() const;
 
    protected:
       float current;   /**< The current value */

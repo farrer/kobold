@@ -46,7 +46,7 @@ Target::~Target()
 /***********************************************************************
  *                              getTarget                              *
  ***********************************************************************/
-float Target::getTarget()
+const float Target::getTarget() const
 {
    if(nUpdate) 
    {
