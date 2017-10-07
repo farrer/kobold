@@ -48,8 +48,8 @@ using namespace Kobold;
 /****************************************************************
  *                      getValuesFromSystem                     *
  ****************************************************************/
-void UserInfo::getValuesFromSystem(Kobold::String packageName,
-                                   Kobold::String userHomePath)
+void UserInfo::getValuesFromSystem(const Kobold::String& packageName,
+      const Kobold::String& userHomePath)
 {
    #if KOBOLD_PLATFORM == KOBOLD_PLATFORM_WIN32
       language = "en";
@@ -251,7 +251,7 @@ void UserInfo::getIPs()
 /****************************************************************
  *                        getUserName                           *
  ****************************************************************/
-Kobold::String UserInfo::getUserName()
+const Kobold::String& UserInfo::getUserName()
 {
    return userName;
 }
@@ -259,7 +259,7 @@ Kobold::String UserInfo::getUserName()
 /****************************************************************
  *                        getUserHome                           *
  ****************************************************************/
-Kobold::String UserInfo::getUserHome()
+const Kobold::String& UserInfo::getUserHome()
 {
    return userHome;
 }
@@ -267,7 +267,7 @@ Kobold::String UserInfo::getUserHome()
 /****************************************************************
  *                     getSavesDirectory                        *
  ****************************************************************/
-Kobold::String UserInfo::getSaveDirectory()
+const Kobold::String UserInfo::getSaveDirectory()
 {
    return (userHome + "saves/");
 }
@@ -276,7 +276,7 @@ Kobold::String UserInfo::getSaveDirectory()
 /****************************************************************
  *                     getCacheDirectory                        *
  ****************************************************************/
-Kobold::String UserInfo::getCacheDirectory()
+const Kobold::String& UserInfo::getCacheDirectory()
 {
    return userTemp;
 }
@@ -284,7 +284,7 @@ Kobold::String UserInfo::getCacheDirectory()
 /****************************************************************
  *                      getTempDirectory                        *
  ****************************************************************/
-Kobold::String UserInfo::getTempDirectory()
+const Kobold::String& UserInfo::getTempDirectory()
 {
    return userTemp;
 }
@@ -292,7 +292,7 @@ Kobold::String UserInfo::getTempDirectory()
 /****************************************************************
  *                        getLanguage                           *
  ****************************************************************/
-Kobold::String UserInfo::getLanguage()
+const Kobold::String& UserInfo::getLanguage()
 {
    return language;
 }
@@ -300,7 +300,7 @@ Kobold::String UserInfo::getLanguage()
 /****************************************************************
  *                        getLanguage                           *
  ****************************************************************/
-Kobold::String UserInfo::getIpAddress()
+const Kobold::String& UserInfo::getIpAddress()
 {
    if(ips == "")
    {

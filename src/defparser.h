@@ -39,17 +39,17 @@ class DefTuple : public ListElement
 
       /*! Set the tuple value
        * \param v -> new value */
-      void setValue(Kobold::String v);
+      void setValue(const Kobold::String& v);
       /*! Set the tuple Key
        * \param k -> new key */
-      void setKey(Kobold::String k);
+      void setKey(const Kobold::String& k);
 
       /*! Get tuple value
        * \return -> current tuple value */
-      Kobold::String getValue();
+      const Kobold::String& getValue() const;
       /*! Get the tuple key
        * \return -> current tuple key */
-      Kobold::String getKey();
+      const Kobold::String& getKey() const;
 
    protected:
       Kobold::String value;         /**< Tuple Value */
@@ -77,7 +77,7 @@ class DefParser : public List
        *                       like file (i18n is one of this type).
        * \note -> fullPath == false will use OgreResources as Path,
        *          if using Ogre, otherwise ignored. */
-      bool load(Kobold::String fileName, bool fullPath=false,
+      bool load(const Kobold::String& fileName, bool fullPath=false,
                 bool stringFile=false);
 
       /*! Get the next tuple from the list
@@ -95,7 +95,7 @@ class DefParser : public List
       /*! Insert a tuple into linked list
        * \param key -> tuple key
        * \param value -> tuple value */
-      void insertTuple(Kobold::String key, Kobold::String value);
+      void insertTuple(const Kobold::String& key, const Kobold::String& value);
 
       DefTuple* curTuple;      /**< Current Tuple */
 };

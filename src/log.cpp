@@ -40,7 +40,7 @@ void Log::init(bool useOgre)
 /************************************************************************
  *                               setLogLevel                            *
  ************************************************************************/
-void Log::setLogLevel(Log::LogLevel level)
+void Log::setLogLevel(const Log::LogLevel& level)
 {
    Log::level = level;
 #if KOBOLD_HAS_OGRE == 1
@@ -55,7 +55,7 @@ void Log::setLogLevel(Log::LogLevel level)
 /************************************************************************
  *                                   add                                *
  ************************************************************************/
-void Log::add(Kobold::String message)
+void Log::add(const Kobold::String& message)
 {
    add(LOG_LEVEL_NORMAL, message.c_str());
 }
@@ -63,7 +63,7 @@ void Log::add(Kobold::String message)
 /************************************************************************
  *                                   add                                *
  ************************************************************************/
-void Log::add(Log::LogLevel level, const char* format, ...)
+void Log::add(const Log::LogLevel& level, const char* format, ...)
 {
    if(level >= Log::level)
    {
@@ -105,7 +105,7 @@ void Log::add(Log::LogLevel level, const char* format, ...)
 /************************************************************************
  *                                getLevel                              *
  ************************************************************************/
-Ogre::LogMessageLevel Log::getLevel(LogLevel level)
+const Ogre::LogMessageLevel Log::getLevel(const LogLevel& level)
 {
    switch(level)
    {
@@ -123,7 +123,7 @@ Ogre::LogMessageLevel Log::getLevel(LogLevel level)
 /************************************************************************
  *                                getLevel                              *
  ************************************************************************/
-Ogre::LoggingLevel Log::getLogLevel(LogLevel level)
+const Ogre::LoggingLevel Log::getLogLevel(const LogLevel& level)
 {
    switch(level)
    {

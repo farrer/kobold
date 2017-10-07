@@ -57,7 +57,7 @@ DefTuple::~DefTuple()
 /***********************************************************************
  *                              setValue                               *
  ***********************************************************************/
-void DefTuple::setValue(Kobold::String v)
+void DefTuple::setValue(const Kobold::String& v)
 {
    value = v;
 }
@@ -65,7 +65,7 @@ void DefTuple::setValue(Kobold::String v)
 /***********************************************************************
  *                               setKey                                *
  ***********************************************************************/
-void DefTuple::setKey(Kobold::String k)
+void DefTuple::setKey(const Kobold::String& k)
 {
    key = k;
 }
@@ -73,7 +73,7 @@ void DefTuple::setKey(Kobold::String k)
 /***********************************************************************
  *                              getValue                               *
  ***********************************************************************/
-Kobold::String DefTuple::getValue()
+const Kobold::String& DefTuple::getValue() const
 {
    return value;
 }
@@ -82,7 +82,7 @@ Kobold::String DefTuple::getValue()
 /***********************************************************************
  *                               getKey                                *
  ***********************************************************************/
-Kobold::String DefTuple::getKey()
+const Kobold::String& DefTuple::getKey() const
 {
    return key;
 }
@@ -121,7 +121,8 @@ void DefParser::doClear()
 /***********************************************************************
  *                            insertTuple                              *
  ***********************************************************************/
-void DefParser::insertTuple(Kobold::String key, Kobold::String value)
+void DefParser::insertTuple(const Kobold::String& key, 
+      const Kobold::String& value)
 {
    DefTuple* tuple = new DefTuple();
  
@@ -169,7 +170,7 @@ bool DefParser::getNextTuple(Kobold::String& key, Kobold::String& value)
 /***********************************************************************
  *                                load                                 *
  ***********************************************************************/
-bool DefParser::load(Kobold::String fileName, bool fullPath,
+bool DefParser::load(const Kobold::String& fileName, bool fullPath,
                      bool stringFile)
 {
 #if KOBOLD_HAS_OGRE == 1

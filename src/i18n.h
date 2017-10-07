@@ -34,17 +34,17 @@ class i18nFile
        * \param fileName the filename (without dir) to load 
        * \param language to load the file name 
        * \note: if fileName not found on language, load en */
-      i18nFile(Kobold::String fileName, Kobold::String language);
+      i18nFile(const Kobold::String& fileName, const Kobold::String& language);
       /*! Destructor */
       ~i18nFile();
    
       /*! Try to translate the string with current file
        * \param s -> string to translate
        * \return translated string*/
-      Kobold::String translate(Kobold::String s);
+      Kobold::String translate(const Kobold::String& s);
    
       /*! Get total strings loaded. */
-      int getTotal();
+      const int getTotal() const;
    
    protected:
    
@@ -61,12 +61,13 @@ class i18nFile
    
       /*! Search for an string on the tree
        * \return pointer to the string element found or NULL */
-      i18nString* find(Kobold::String s, i18nString* c);
+      i18nString* find(const Kobold::String& s, i18nString* c);
    
       /*! Add string to the tree */
-      i18nString* add(Kobold::String s, Kobold::String translation);
-      i18nString* add(Kobold::String s, Kobold::String translation,
-                      i18nString* c);
+      i18nString* add(const Kobold::String& s, 
+            const Kobold::String& translation);
+      i18nString* add(const Kobold::String& s, 
+            const Kobold::String& translation, i18nString* c);
    
       /*! Clear the list from c to all leafs */
       void clear(i18nString* c);
@@ -82,14 +83,15 @@ class i18n
        * \param fileName the filename (without dir) to load
        * \param language to load the file name
        * \note: if fileName not found on language, load en */
-      static void init(Kobold::String fileName, Kobold::String language);
+      static void init(const Kobold::String& fileName, 
+            const Kobold::String& language);
       /*! End the use of i18 system */
       static void clear();
    
       /*! Try to translate the string with current file
        * \param s -> string to translate
        * \return translated string*/
-      static Kobold::String translate(Kobold::String s);
+      static Kobold::String translate(const Kobold::String& s);
 
    private:
       i18n(){};

@@ -32,7 +32,7 @@ using namespace Kobold;
 /************************************************************************
  *                              replaceAll                              *
  ************************************************************************/
-String StringUtil::replaceAll(String s, char orig, char dest)
+String StringUtil::replaceAll(const String& s, char orig, char dest)
 {
 #if KOBOLD_HAS_OGRE == 1
    char o[2];
@@ -52,7 +52,7 @@ String StringUtil::replaceAll(String s, char orig, char dest)
 /************************************************************************
  *                              toLowerCase                             *
  ************************************************************************/
-String StringUtil::toLowerCase(String s)
+String StringUtil::toLowerCase(const String& s)
 {
 #if KOBOLD_HAS_OGRE == 1
    String ret = s;
@@ -83,7 +83,7 @@ String StringUtil::toString(int val)
 /************************************************************************
  *                               endsWith                               *
  ************************************************************************/
-bool StringUtil::endsWith(String s, char c)
+bool StringUtil::endsWith(const String& s, char c)
 {
    if(s.length() > 0)
    {

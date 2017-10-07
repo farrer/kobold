@@ -42,12 +42,12 @@ namespace Kobold
    {
       public:
          /*! \return copy of s with all characters orig replaced to dest */
-         static String replaceAll(String s, char orig, char dest);
+         static String replaceAll(const String& s, char orig, char dest);
          /*! \return copy of s with all characters lowercased */
-         static String toLowerCase(String s);
+         static String toLowerCase(const String& s);
 
          /*! \return if s ends with character c */
-         static bool endsWith(String s, char c);
+         static bool endsWith(const String& s, char c);
 
          /*! Convert an integer value to string */
          static String toString(int val);

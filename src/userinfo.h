@@ -42,8 +42,8 @@ class UserInfo
        * \param userHome path to user home. "" to check automatically.
        * \note -> this function is usually called at 
        *          the beggining of the program, a single time */
-      static void getValuesFromSystem(Kobold::String packageName,
-                               Kobold::String userHomePath="");
+      static void getValuesFromSystem(const Kobold::String& packageName,
+            const Kobold::String& userHomePath="");
 
 #if KOBOLD_PLATFORM == KOBOLD_PLATFORM_ANDROID
       /*! Define directories from JAVA android code
@@ -55,25 +55,25 @@ class UserInfo
 #endif
 
       /*! Get The User Login Name */
-      static Kobold::String getUserName();
+      static const Kobold::String& getUserName();
 
       /*! Get the User Home */
-      static Kobold::String getUserHome();
+      static const Kobold::String& getUserHome();
 
       /*! Get the Directory where will save user files */
-      static Kobold::String getSaveDirectory();
+      static const Kobold::String getSaveDirectory();
 
       /*! Get the Directory where will save user cache files */
-      static Kobold::String getCacheDirectory();
+      static const Kobold::String& getCacheDirectory();
    
       /*! Get the Directory where will save user temporary files */
-      static Kobold::String getTempDirectory();
+      static const Kobold::String& getTempDirectory();
    
       /*! Get the system language */
-      static Kobold::String getLanguage();
+      static const Kobold::String& getLanguage();
    
       /*! Get '|' separated list of valid IP address of the current system. */
-      static Kobold::String getIpAddress();
+      static const Kobold::String& getIpAddress();
 
 
    private:

@@ -48,18 +48,18 @@ namespace Kobold
 
          /*! Define log level to use
           * \param level new log level to use */
-         static void setLogLevel(LogLevel level);
+         static void setLogLevel(const LogLevel& level);
          /*! Add a message to log, at default normal level */
-         static void add(Kobold::String message);
+         static void add(const Kobold::String& message);
          /*! Add a formated message to log */
-         static void add(LogLevel level, const char* format, ...);
+         static void add(const LogLevel& level, const char* format, ...);
 
       private:
 
 #if KOBOLD_HAS_OGRE == 1
          /*! Convert Kobold log level to ogre's */
-         static Ogre::LogMessageLevel getLevel(LogLevel level);
-         static Ogre::LoggingLevel getLogLevel(LogLevel level);
+         static const Ogre::LogMessageLevel getLevel(const LogLevel& level);
+         static const Ogre::LoggingLevel getLogLevel(const LogLevel& level);
 #endif
 
          Log(){};

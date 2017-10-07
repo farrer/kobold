@@ -40,7 +40,7 @@ class KeyboardTextEditor
    public:
       /*! Append text to current cursor position 
        * \param textToAppend string to append to current cursor position. */
-      virtual void appendToCursor(Kobold::String textToAppend)=0;
+      virtual void appendToCursor(const Kobold::String& textToAppend)=0;
 
       /*! Delete a character at current cursor position.
        * \param after -> true to delete character after the cursor (like 

@@ -27,7 +27,8 @@ using namespace Kobold;
 /****************************************************************
  *                         Constructor                          *
  ****************************************************************/
-i18nFile::i18nFile(Kobold::String fileName, Kobold::String language)
+i18nFile::i18nFile(const Kobold::String& fileName, 
+      const Kobold::String& language)
 {
    DefParser def;
    Kobold::String key;
@@ -67,7 +68,7 @@ i18nFile::~i18nFile()
 /****************************************************************
  *                          translate                           *
  ****************************************************************/
-Kobold::String i18nFile::translate(Kobold::String s)
+Kobold::String i18nFile::translate(const Kobold::String& s)
 {
    i18nString* node = find(s, head);
    if(node != NULL)
@@ -86,7 +87,7 @@ Kobold::String i18nFile::translate(Kobold::String s)
 /****************************************************************
  *                          getTotal                            *
  ****************************************************************/
-int i18nFile::getTotal()
+const int i18nFile::getTotal() const
 {
    return total;
 }
@@ -128,8 +129,8 @@ void i18nFile::clear(i18nString* c)
 /****************************************************************
  *                              add                             *
  ****************************************************************/
-i18nFile::i18nString* i18nFile::add(Kobold::String s,
-      Kobold::String translation)
+i18nFile::i18nString* i18nFile::add(const Kobold::String& s,
+      const Kobold::String& translation)
 {
    total++;
    
@@ -151,8 +152,8 @@ i18nFile::i18nString* i18nFile::add(Kobold::String s,
 /****************************************************************
  *                              add                             *
  ****************************************************************/
-i18nFile::i18nString* i18nFile::add(Kobold::String s,
-      Kobold::String translation, i18nString* c)
+i18nFile::i18nString* i18nFile::add(const Kobold::String& s,
+      const Kobold::String& translation, i18nString* c)
 {
    int compValue = s.compare(c->strKey);
    if(compValue == 0)
@@ -201,7 +202,7 @@ i18nFile::i18nString* i18nFile::add(Kobold::String s,
 /****************************************************************
  *                            find                              *
  ****************************************************************/
-i18nFile::i18nString* i18nFile::find(Kobold::String s, i18nString* c)
+i18nFile::i18nString* i18nFile::find(const Kobold::String& s, i18nString* c)
 {
    if(c == NULL)
    {
@@ -228,7 +229,7 @@ i18nFile::i18nString* i18nFile::find(Kobold::String s, i18nString* c)
 /****************************************************************
  *                            init                              *
  ****************************************************************/
-void i18n::init(Kobold::String fileName, Kobold::String language)
+void i18n::init(const Kobold::String& fileName, const Kobold::String& language)
 {
    curFile = new i18nFile(fileName, language);
 }
@@ -247,7 +248,7 @@ void i18n::clear()
 /****************************************************************
  *                          translate                           *
  ****************************************************************/
-Kobold::String i18n::translate(Kobold::String s)
+Kobold::String i18n::translate(const Kobold::String& s)
 {
    if(curFile != NULL)
    {
