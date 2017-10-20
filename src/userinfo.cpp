@@ -19,13 +19,14 @@
  */
 
 #include "userinfo.h"
+#include "platform.h"
 
 #if KOBOLD_PLATFORM == KOBOLD_PLATFORM_IOS ||\
     KOBOLD_PLATFORM == KOBOLD_PLATFORM_MACOS
    #include "macutils.h"
 #endif
 
-#if KOBOLD_PLATFORM == KOBOLD_PLATFORM_WIN32
+#if KOBOLD_PLATFORM == KOBOLD_PLATFORM_WINDOWS
    #include <windows.h>
 #elif KOBOLD_PLATFORM != KOBOLD_PLATFORM_IOS
    #include <pwd.h>
@@ -36,7 +37,7 @@
    #include <sys/stat.h>
 #endif
 
-#if KOBOLD_PLATFORM != KOBOLD_PLATFORM_WIN32 && \
+#if KOBOLD_PLATFORM != KOBOLD_PLATFORM_WINDOWS && \
     KOBOLD_PLATFORM != KOBOLD_PLATFORM_ANDROID
    #include <arpa/inet.h>
    #include <ifaddrs.h>
@@ -51,7 +52,7 @@ using namespace Kobold;
 void UserInfo::getValuesFromSystem(const Kobold::String& packageName,
       const Kobold::String& userHomePath)
 {
-   #if KOBOLD_PLATFORM == KOBOLD_PLATFORM_WIN32
+   #if KOBOLD_PLATFORM == KOBOLD_PLATFORM_WINDOWS
       language = "en";
       char buffer[512];
       DWORD bufSize = sizeof(buffer);
@@ -179,7 +180,7 @@ void UserInfo::setAndroidDirectories(JNIEnv* env, jstring home, jstring cache)
  ****************************************************************/
 void UserInfo::createDirectories()
 {
-   #if KOBOLD_PLATFORM == KOBOLD_PLATFORM_WIN32
+   #if KOBOLD_PLATFORM == KOBOLD_PLATFORM_WINDOWS
       CreateDirectory(getUserHome().c_str(),NULL);
       CreateDirectory(getSaveDirectory().c_str(), NULL);
       CreateDirectory(getCacheDirectory().c_str(), NULL);
@@ -198,7 +199,7 @@ void UserInfo::createDirectories()
 void UserInfo::getIPs()
 {
    /* Based on example code from getifaddrs man page. */
-#if KOBOLD_PLATFORM != KOBOLD_PLATFORM_WIN32 && \
+#if KOBOLD_PLATFORM != KOBOLD_PLATFORM_WINDOWS && \
     KOBOLD_PLATFORM != KOBOLD_PLATFORM_ANDROID
    struct ifaddrs *ifaddr, *ifa;
    int family;

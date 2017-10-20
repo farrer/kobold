@@ -20,7 +20,8 @@
 
 
 #include "network.h"
-#include "platform.h"
+
+#if KOBOLD_PLATFORM != KOBOLD_PLATFORM_WINDOWS
 
 #include <stdio.h>
 #include <errno.h>
@@ -630,5 +631,5 @@ bool NetServer::doStep()
    return true;
 }
 
-
+#endif
 

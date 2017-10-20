@@ -21,6 +21,11 @@
 #ifndef _kobold_network_h
 #define _kobold_network_h
 
+#include "platform.h"
+
+//TODO: implement it for windows.
+#if KOBOLD_PLATFORM != KOBOLD_PLATFORM_WINDOWS
+
 #include <sys/socket.h>
 #include <unistd.h>
 #include <sys/types.h> 
@@ -204,6 +209,7 @@ class NetServer : public NetCommon, public List
 
 }
 
+#endif
 
 #endif
 
