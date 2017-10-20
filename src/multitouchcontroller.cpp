@@ -19,6 +19,10 @@
 */
 
 #include "multitouchcontroller.h"
+
+#if KOBOLD_PLATFORM == KOBOLD_PLATFORM_IOS ||\
+    KOBOLD_PLATFORM == KOBOLD_PLATFORM_ANDROID
+
 #include "log.h"
 
 #if KOBOLD_HAS_OGRE == 1
@@ -376,3 +380,4 @@ pthread_mutex_t MultiTouchController::mutex;
 int MultiTouchController::curTotalTouches = 0;
 TouchInfo MultiTouchController::threatTouches[MAX_TOUCHES_TO_THREAT];
 
+#endif

@@ -22,6 +22,11 @@
 #define _kobold_multitouch_controller_h
 
 #include "koboldconfig.h"
+#include "platform.h"
+
+#if KOBOLD_PLATFORM == KOBOLD_PLATFORM_IOS ||\
+    KOBOLD_PLATFORM == KOBOLD_PLATFORM_ANDROID
+
 #include "list.h"
 #include <pthread.h>
 
@@ -140,6 +145,8 @@ class MultiTouchController
 
 
 }
+
+#endif
 
 #endif
 
