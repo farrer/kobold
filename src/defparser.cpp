@@ -24,6 +24,7 @@
 #if KOBOLD_HAS_OGRE == 1
    #include <OGRE/OgreDataStream.h>
    #include <OGRE/OgreResourceGroupManager.h>
+   #include <OGRE/OgreException.h>
 #endif
 
 #include <fstream>
