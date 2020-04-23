@@ -205,7 +205,7 @@ bool DefParser::load(const Kobold::String& fileName, bool fullPath,
          fileData = Ogre::ResourceGroupManager::getSingleton().openResource(
                                                                       fileName);
       }
-      catch(Ogre::FileNotFoundException)
+      catch(const Ogre::FileNotFoundException&)
       {
          Kobold::Log::add(Log::LOG_LEVEL_ERROR,
                "defParser: Couldn't open inner file: '%s'", fileName.c_str()); 
