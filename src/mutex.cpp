@@ -56,7 +56,7 @@ Mutex::~Mutex()
 void Mutex::lock()
 {
 #if KOBOLD_HAS_SDL == 1
-   if(!SDL_LockMutex(mutex) == 0)
+   if(SDL_LockMutex(mutex) != 0)
    {
       Log::add(Log::LOG_LEVEL_ERROR, "Error: Couldn't lock mutex!");
    }
