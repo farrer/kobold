@@ -20,12 +20,9 @@
 
 #include "kstring.h"
 
-#if KOBOLD_HAS_OGRE == 1
-   #include <OGRE/OgreStringConverter.h>
-#else
-   #include <sstream>
-   #include <string>
-#endif
+#include <sstream>
+#include <string>
+#include <algorithm>
 
 using namespace Kobold;
 
@@ -34,19 +31,9 @@ using namespace Kobold;
  ************************************************************************/
 String StringUtil::replaceAll(const String& s, char orig, char dest)
 {
-#if KOBOLD_HAS_OGRE == 1
-   char o[2];
-   o[0] = orig;
-   o[1] = '\0';
-   char d[2];
-   d[0] = dest;
-   d[1] = '\0';
-   return Ogre::StringUtil::replaceAll(s, o, d);
-#else
    String ret = s;
    std::replace(ret.begin(), ret.end(), orig, dest);
    return ret;
-#endif
 }
 
 /************************************************************************
@@ -54,15 +41,9 @@ String StringUtil::replaceAll(const String& s, char orig, char dest)
  ************************************************************************/
 String StringUtil::toLowerCase(const String& s)
 {
-#if KOBOLD_HAS_OGRE == 1
-   String ret = s;
-   Ogre::StringUtil::toLowerCase(ret);
-   return ret;
-#else
    String ret = s;
    std::transform(ret.begin(), ret.end(), ret.begin(), ::tolower);
    return ret;
-#endif
 }
 
 /************************************************************************
@@ -70,14 +51,9 @@ String StringUtil::toLowerCase(const String& s)
  ************************************************************************/
 String StringUtil::toString(int val)
 {
-#if KOBOLD_HAS_OGRE == 1
-  return Ogre::StringConverter::toString(val);
-#else
   std::ostringstream s;
   s << val;
   return s.str();
-#endif
-
 }
 
 /************************************************************************

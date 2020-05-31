@@ -23,20 +23,12 @@
 
 #include "koboldconfig.h"
 
-#if KOBOLD_HAS_OGRE == 1
-   #include <OGRE/OgreString.h>
-#else
-   #include <string>
-   #include <algorithm>
-#endif
+#include <string>
+
 
 namespace Kobold
 {
-#if KOBOLD_HAS_OGRE == 1
-   typedef Ogre::String String;
-#else
    typedef std::string String;
-#endif
    
    class StringUtil
    {
