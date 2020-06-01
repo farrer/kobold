@@ -24,12 +24,7 @@
     KOBOLD_PLATFORM == KOBOLD_PLATFORM_ANDROID
 
 #include "log.h"
-
-#if KOBOLD_HAS_OGRE == 1
-   #include <OGRE/OgreMath.h>
-#else
-   #include <stdlib.h>
-#endif
+#include <stdlib.h>
 
 using namespace Kobold;
 
@@ -214,12 +209,7 @@ void MultiTouchController::touchMoved(int prevX, int prevY, int x, int y)
       t->info.y = y;
       
       /* Avoid receive "move" state within a minimun variation */
-#if KOBOLD_HAS_OGRE == 1
-      if((Ogre::Math::Abs(x-prevX) > 2.0f) ||
-         (Ogre::Math::Abs(y-prevY) > 2.0f) )
-#else
       if((abs(x - prevX) > 2) || (abs(y - prevY) > 2) )
-#endif
       {
          t->info.state = TOUCH_MOVED;
       }
