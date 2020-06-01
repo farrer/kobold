@@ -19,8 +19,8 @@
  */
 
 #include "i18n.h"
-#include "defparser.h"
-#include "log.h"
+#include "ogredefparser.h"
+#include "../log.h"
 
 using namespace Kobold;
 
@@ -30,14 +30,13 @@ using namespace Kobold;
 i18nFile::i18nFile(const Kobold::String& fileName, 
       const Kobold::String& language)
 {
-   DefParser def;
+   OgreDefParser def;
    Kobold::String key;
    Kobold::String value;
    total = 0;
    head = NULL;
    
-   if(!def.load(language+Kobold::String("/")+fileName,
-                false, true))
+   if(!def.load(language+Kobold::String("/") + fileName, false, true))
    {
       Kobold::Log::add(Kobold::String("Error: couldn't load '")+
          fileName + Kobold::String("' for language ")+

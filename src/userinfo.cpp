@@ -21,11 +21,6 @@
 #include "userinfo.h"
 #include "platform.h"
 
-#if KOBOLD_PLATFORM == KOBOLD_PLATFORM_IOS ||\
-    KOBOLD_PLATFORM == KOBOLD_PLATFORM_MACOS
-   #include "macutils.h"
-#endif
-
 #if KOBOLD_PLATFORM == KOBOLD_PLATFORM_WINDOWS
    #include <windows.h>
 #elif KOBOLD_PLATFORM != KOBOLD_PLATFORM_IOS
@@ -81,29 +76,7 @@ void UserInfo::getValuesFromSystem(const Kobold::String& packageName,
       }
       userTemp = "./";
    #elif KOBOLD_PLATFORM == KOBOLD_PLATFORM_IOS
-   
-      #if KOBOLD_HAS_OGRE == 1
-         /* Must save things under the Documents folder */
-         userHome = Ogre::iOSDocumentsDirectory();
-         userTemp = Ogre::macTempFileName();
-         userName = "iOS User";
-         /* Get language */
-         CFLocaleRef locale = CFLocaleCopyCurrent();
-         if(locale == NULL)
-         {
-            language = "en";
-         }
-         else
-         {
-            char buf[64];
-            CFStringGetCString(CFLocaleGetIdentifier(locale),
-                               &buf[0], 64, kCFStringEncodingASCII);
-            language = buf[0];
-            language += buf[1];
-         }
-      #else
          //TODO!
-      #endif
    #elif KOBOLD_PLATFORM != KOBOLD_PLATFORM_ANDROID
       language = "en";
       /* Get all Current User's Info (so more clean, isn't it?) */

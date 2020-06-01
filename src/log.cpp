@@ -19,37 +19,98 @@
 */
 
 #include "log.h"
-#include <stdio.h>
+#include <iostream>
 #include <stdarg.h>
 
-
-#if KOBOLD_HAS_OGRE == 1
-   #include <OGRE/OgreLogManager.h>
-#endif
-
 using namespace Kobold;
+
+/////////////////////////////////////////////////////////////////////////////
+//                                                                         //
+//                               BaseLog                                   //
+//                                                                         //
+/////////////////////////////////////////////////////////////////////////////
+
+/************************************************************************
+ *                              constructor                             *
+ ************************************************************************/
+BaseLog::BaseLog() 
+{
+   level = LOG_LEVEL_NORMAL;
+}
+
+/************************************************************************
+ *                               destructor                             *
+ ************************************************************************/
+BaseLog::~BaseLog() 
+{
+}
+
+/************************************************************************
+ *                              setLogLevel                             *
+ ************************************************************************/
+void BaseLog::setLogLevel(const LogLevel& level)
+{
+   this->level = level;
+}
+
+/************************************************************************
+ *                              getLogLevel                             *
+ ************************************************************************/
+const LogLevel& BaseLog::getLogLevel() 
+{
+   return this->level;
+}
+
+/////////////////////////////////////////////////////////////////////////////
+//                                                                         //
+//                             DefaultLog                                  //
+//                                                                         //
+/////////////////////////////////////////////////////////////////////////////
+
+/************************************************************************
+ *                              constructor                             *
+ ************************************************************************/
+DefaultLog::DefaultLog() 
+{
+}
+
+/************************************************************************
+ *                               destructor                             *
+ ************************************************************************/
+DefaultLog::~DefaultLog() 
+{
+}
+
+/************************************************************************
+ *                                 add                                  *
+ ************************************************************************/
+void DefaultLog::add(const Kobold::String& message)
+{
+   std::cout << message;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+//                                                                         //
+//                                 Log                                     //
+//                                                                         //
+/////////////////////////////////////////////////////////////////////////////
+
 
 /************************************************************************
  *                                  init                                *
  ************************************************************************/
-void Log::init(bool useOgre)
+void Log::init(BaseLog* log)
 {
-   Log::useOgre = useOgre;
+   Log::log = log;
 }
 
 /************************************************************************
  *                               setLogLevel                            *
  ************************************************************************/
-void Log::setLogLevel(const Log::LogLevel& level)
+void Log::setLogLevel(const LogLevel& level)
 {
-   Log::level = level;
-#if KOBOLD_HAS_OGRE == 1
-   if(useOgre)
-   {
-      Ogre::LogManager::getSingleton().getDefaultLog()->setLogDetail(
-         getLogLevel(level));
-   }
-#endif
+   log->setLogLevel(level);
 }
 
 /************************************************************************
@@ -57,91 +118,38 @@ void Log::setLogLevel(const Log::LogLevel& level)
  ************************************************************************/
 void Log::add(const Kobold::String& message)
 {
-   add(LOG_LEVEL_NORMAL, message.c_str());
+   if(log->getLogLevel() <= LOG_LEVEL_NORMAL)
+   {
+      log->add(message + "\n");
+   }
 }
 
 /************************************************************************
  *                                   add                                *
  ************************************************************************/
-void Log::add(const Log::LogLevel& level, const char* format, ...)
+void Log::add(const LogLevel& level, const char* format, ...)
 {
-   if(level >= Log::level)
+   if(level >= log->getLogLevel())
    {
       /* Write the error message */
       va_list arg;
 
       va_start(arg, format);
-#if KOBOLD_HAS_OGRE == 1
-      if(useOgre)
-      {
-         /* Print message to buffer */
-         char buf[512];
-         vsnprintf(&buf[0], 512, format, arg);
+      
+      /* Print message to buffer */
+      char buf[512];
+      vsnprintf(&buf[0], 512, format, arg);
 
-         /* Define message level */
-         Ogre::LogMessageLevel messageLevel = getLevel(level);
+      log->add(buf);
 
-         Ogre::LogManager::getSingleton().getDefaultLog()->logMessage(buf, 
-               messageLevel);
-      } 
-      else
-      {
-#endif
-         /* Direct print message to std::out */
-         vprintf(format, arg);
-#if KOBOLD_HAS_OGRE == 1
-      }
-#endif
       va_end(arg);
 
-      if(!useOgre)
-      {
-         printf("\n");
-      }
+      log->add("\n");
    }
 }
-
-#if KOBOLD_HAS_OGRE == 1
-/************************************************************************
- *                                getLevel                              *
- ************************************************************************/
-const Ogre::LogMessageLevel Log::getLevel(const LogLevel& level)
-{
-   switch(level)
-   {
-      case LOG_LEVEL_DEBUG:
-         return Ogre::LML_TRIVIAL;
-      case LOG_LEVEL_ERROR:
-         return Ogre::LML_CRITICAL;
-      default:
-      case LOG_LEVEL_NORMAL:
-         return Ogre::LML_NORMAL;
-   }
-
-}
-
-/************************************************************************
- *                                getLevel                              *
- ************************************************************************/
-const Ogre::LoggingLevel Log::getLogLevel(const LogLevel& level)
-{
-   switch(level)
-   {
-      case LOG_LEVEL_DEBUG:
-         return Ogre::LL_BOREME;
-      case LOG_LEVEL_ERROR:
-         return Ogre::LL_LOW;
-      default:
-      case LOG_LEVEL_NORMAL:
-         return Ogre::LL_NORMAL;
-   }
-
-}
-#endif
 
 /************************************************************************
  *                              static memebers                         *
  ************************************************************************/
-Log::LogLevel Log::level = LOG_LEVEL_NORMAL;
-bool Log::useOgre = false;
+BaseLog* Log::log = NULL;
 

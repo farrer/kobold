@@ -20,14 +20,6 @@
 
 #include "defparser.h"
 #include "log.h"
-
-#if KOBOLD_HAS_OGRE == 1
-   #include <OGRE/OgreDataStream.h>
-   #include <OGRE/OgreResourceGroupManager.h>
-   #include <OGRE/OgreException.h>
-#endif
-
-#include <fstream>
 #include <iostream>
 
 namespace Kobold
@@ -86,6 +78,66 @@ const Kobold::String& DefTuple::getValue() const
 const Kobold::String& DefTuple::getKey() const
 {
    return key;
+}
+
+///////////////////////////////////////////////////////////////////////////
+//                                                                       //
+//                             DefStreamStd                              //
+//                                                                       //
+///////////////////////////////////////////////////////////////////////////
+
+/***********************************************************************
+ *                            Constructor                              *
+ ***********************************************************************/
+DefStreamStd::DefStreamStd() 
+{
+}
+ 
+/***********************************************************************
+ *                             Destructor                              *
+ ***********************************************************************/
+DefStreamStd::~DefStreamStd() 
+{
+}
+
+/***********************************************************************
+ *                                open                                 *
+ ***********************************************************************/
+bool DefStreamStd::open(const Kobold::String& fileName) 
+{
+   fileStream.open(fileName.c_str(), std::ios::in | std::ios::binary);
+   if(!fileStream)
+   {
+      return false;
+   }
+
+   return true;
+}
+
+/***********************************************************************
+ *                                eof                                  *
+ ***********************************************************************/
+bool DefStreamStd::eof() 
+{
+   return fileStream.eof();
+}
+
+/***********************************************************************
+ *                               getLine                               *
+ ***********************************************************************/
+Kobold::String DefStreamStd::getLine() 
+{
+   Kobold::String strBuffer;
+   getline(fileStream, strBuffer);
+   return strBuffer;
+}
+
+/***********************************************************************
+ *                                close                                *
+ ***********************************************************************/
+void DefStreamStd::close() 
+{
+   fileStream.close();
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -171,13 +223,18 @@ bool DefParser::getNextTuple(Kobold::String& key, Kobold::String& value)
 /***********************************************************************
  *                                load                                 *
  ***********************************************************************/
-bool DefParser::load(const Kobold::String& fileName, bool fullPath,
-                     bool stringFile)
+bool DefParser::load(const Kobold::String& fileName, bool stringFile)
 {
-#if KOBOLD_HAS_OGRE == 1
-   Ogre::DataStreamPtr fileData;   /**< File when using ogre to open */
-#endif
-   std::ifstream fileStd;          /**< File when using std full path */
+   DefStreamStd streamStd;
+   return load(fileName, stringFile, streamStd);
+}
+
+/***********************************************************************
+ *                                load                                 *
+ ***********************************************************************/
+bool DefParser::load(const Kobold::String& fileName, bool stringFile, 
+            DefStream& stream)
+{
    Kobold::String strBuffer, strKey, strData;
    Kobold::String::size_type pos;
    int line;
@@ -186,55 +243,17 @@ bool DefParser::load(const Kobold::String& fileName, bool fullPath,
    doClear();
 
    /* Open the Definition File */
-   if(fullPath)
+   if(!stream.open(fileName.c_str())) 
    {
-      fileStd.open(fileName.c_str(), std::ios::in | std::ios::binary);
-      if(!fileStd)
-      {
-         Kobold::Log::add(Log::LOG_LEVEL_ERROR,
-            "defParser: Couldn't open fullpath file: '%s'",
-            fileName.c_str());
-         return false;
-      }
-   }
-   else
-   {
-#if KOBOLD_HAS_OGRE == 1
-      try
-      {
-         fileData = Ogre::ResourceGroupManager::getSingleton().openResource(
-                                                                      fileName);
-      }
-      catch(const Ogre::FileNotFoundException&)
-      {
-         Kobold::Log::add(Log::LOG_LEVEL_ERROR,
-               "defParser: Couldn't open inner file: '%s'", fileName.c_str()); 
-         return false;
-      }
-#endif
+      Kobold::Log::add(LOG_LEVEL_ERROR,
+            "defParser: Couldn't open file: '%s'", fileName.c_str());
+      return false;
    }
    
-   for(line = 1;
-#if KOBOLD_HAS_OGRE == 1
-       ((fullPath)?(!fileStd.eof()):(!fileData->eof()));
-#else
-       (!fileStd.eof());
-#endif
-       line++)
+   for(line = 1; !stream.eof(); line++)
    {
       /* Get the line */
-      if(fullPath)
-      {
-         getline(fileStd, strBuffer);
-      }
-      else
-      {
-#if KOBOLD_HAS_OGRE == 1
-         strBuffer = fileData->getLine();
-#else
-         getline(fileStd, strBuffer);
-#endif
-      }
+      strBuffer = stream.getLine();
 
       /* Find First non white space character */ 
       pos = strBuffer.find_first_not_of(" \t");
@@ -248,22 +267,11 @@ bool DefParser::load(const Kobold::String& fileName, bool fullPath,
           {
              if(strBuffer[pos] != '"')
              {
-                Kobold::Log::add(Log::LOG_LEVEL_NORMAL, 
+                Kobold::Log::add(LOG_LEVEL_NORMAL, 
                       "defParser: Was expecting \" at key '%s'", 
                       strBuffer.c_str());
                 /* Invalid string file! */
-                if(fullPath)
-                {
-                   fileStd.close();
-                }
-                else
-                {
-                   #if KOBOLD_HAS_OGRE == 1
-                      fileData->close();
-                   #else
-                      fileStd.close();
-                   #endif
-                }
+                stream.close();
                 return false;
              }
              pos += 1;
@@ -276,19 +284,8 @@ bool DefParser::load(const Kobold::String& fileName, bool fullPath,
              pos = strBuffer.find_first_not_of(" \t\n", pos);
              if((pos == Kobold::String::npos) || (strBuffer[pos] != '"'))
              {
-                if(fullPath)
-                {
-                   fileStd.close();
-                }
-                else
-                {
-                   #if KOBOLD_HAS_OGRE == 1
-                      fileData->close();
-                   #else
-                      fileStd.close();
-                   #endif
-                }
-                Kobold::Log::add(Log::LOG_LEVEL_NORMAL,
+                stream.close();
+                Kobold::Log::add(LOG_LEVEL_NORMAL,
                    "defParser: Was expecting trail \" at key '%s'",
                    strBuffer.c_str());
                 return false;
@@ -307,20 +304,9 @@ bool DefParser::load(const Kobold::String& fileName, bool fullPath,
           pos = strBuffer.find_first_not_of(" \t", pos);
           if((pos == Kobold::String::npos) || (strBuffer[pos] != '='))
           {
-             Kobold::Log::add(Log::LOG_LEVEL_NORMAL, 
+             Kobold::Log::add(LOG_LEVEL_NORMAL, 
                 "defParser: Was expecting '=' at '%s'", strBuffer.c_str());
-             if(fullPath)
-             {
-                fileStd.close();
-             }
-             else
-             {
-                #if KOBOLD_HAS_OGRE == 1
-                   fileData->close();
-                #else
-                   fileStd.close();
-                #endif
-             }
+             stream.close();
              return false;
           }
 
@@ -361,18 +347,7 @@ bool DefParser::load(const Kobold::String& fileName, bool fullPath,
    }
 
    /* Close input */
-   if(fullPath)
-   {
-      fileStd.close();
-   }
-   else
-   {
-      #if KOBOLD_HAS_OGRE == 1
-         fileData->close();
-      #else
-         fileStd.close();
-      #endif
-   }
+   stream.close();
    
    return true;
 }

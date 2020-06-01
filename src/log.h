@@ -24,27 +24,51 @@
 #include "kstring.h"
 #include "koboldconfig.h"
 
-#if KOBOLD_HAS_OGRE == 1
-   #include <OGRE/OgreLog.h>
-#endif
-
 namespace Kobold
 {
-   /*! The Log abstractor class. Will use Ogre::Log when using OGRE,
-    * otherwise, just outputs to std::out. */
+   /*! The log level */
+   enum LogLevel
+   {
+      LOG_LEVEL_DEBUG,
+      LOG_LEVEL_NORMAL,
+      LOG_LEVEL_ERROR
+   };
+
+   /*! Abstract class for log implementations */
+   class BaseLog
+   {
+      public:
+         BaseLog();
+         virtual ~BaseLog();
+         /*! Define log level to use
+          * \param level new log level to use */
+         virtual void setLogLevel(const LogLevel& level);
+         /*! \return current log level */
+         const LogLevel& getLogLevel();
+         /*! Add a message to log, at default normal level */
+         virtual void add(const Kobold::String& message) = 0;
+      protected:
+         LogLevel level; /**< Current log level */
+   };
+
+   /*! Default log implementation, putting output to std::out */
+   class DefaultLog : public BaseLog
+   {
+      public:
+         DefaultLog();
+         virtual ~DefaultLog();
+         /*! Add a message to log, at default normal level */
+         virtual void add(const Kobold::String& message);
+   };
+
+
+   /*! The Log static class, using the desired log as output. */
    class Log
    {
       public:
-         enum LogLevel
-         {
-            LOG_LEVEL_DEBUG,
-            LOG_LEVEL_NORMAL,
-            LOG_LEVEL_ERROR
-         };
-
          /*! Init the log system.
-          * \param useOgre if should use OgreLog if available */
-         static void init(bool useOgre);
+          * \param log pointer to the log to use. */
+         static void init(BaseLog* log);
 
          /*! Define log level to use
           * \param level new log level to use */
@@ -55,17 +79,9 @@ namespace Kobold
          static void add(const LogLevel& level, const char* format, ...);
 
       private:
-
-#if KOBOLD_HAS_OGRE == 1
-         /*! Convert Kobold log level to ogre's */
-         static const Ogre::LogMessageLevel getLevel(const LogLevel& level);
-         static const Ogre::LoggingLevel getLogLevel(const LogLevel& level);
-#endif
-
          Log(){};
          
-         static LogLevel level; /**< Current log level */
-         static bool useOgre;   /**< If should use ogre log */
+         static BaseLog* log; /**< log to use */
    };
 }
 

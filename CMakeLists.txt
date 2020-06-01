@@ -89,8 +89,15 @@ include(sources.cmake)
 # Build the library with defined mode (static or shared)
 if(${KOBOLD_STATIC})
    add_library(kobold ${KOBOLD_SOURCES} ${KOBOLD_HEADERS})
+   if(${KOBOLD_HAS_OGRE})
+      add_library(kobold-ogre3d ${KOBOLD_OGRE_SOURCES} ${KOBOLD_OGRE_HEADERS})
+   endif(${KOBOLD_HAS_OGRE})
 else(${KOBOLD_STATIC})
    add_library(kobold SHARED ${KOBOLD_SOURCES} ${KOBOLD_HEADERS} )
+   if(${KOBOLD_HAS_OGRE})
+      add_library(kobold-ogre3d SHARED ${KOBOLD_OGRE_SOURCES} 
+         ${KOBOLD_OGRE_HEADERS})
+   endif(${KOBOLD_HAS_OGRE})
 endif(${KOBOLD_STATIC})
 
 set_target_properties(kobold PROPERTIES VERSION ${VERSION}
@@ -99,7 +106,11 @@ set_target_properties(kobold PROPERTIES VERSION ${VERSION}
 # install the include files and created library.
 install(FILES ${KOBOLD_CONFIG_FILE} DESTINATION include/kobold)
 install(FILES ${KOBOLD_HEADERS} DESTINATION include/kobold)
+if(${KOBOLD_HAS_OGRE})
+   install(FILES ${KOBOLD_OGRE_HEADERS} DESTINATION include/kobold/ogre3d)
+endif(${KOBOLD_HAS_OGRE})
 install(TARGETS kobold DESTINATION lib)
+install(TARGETS kobold-ogre3d DESTINATION lib)
 
 message("\n**********************************************")
 message("Kobold build: ")
