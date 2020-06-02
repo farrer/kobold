@@ -22,38 +22,9 @@
 #define _kobold_ogre_def_parser_h
 
 #include "../defparser.h"
-#include <OGRE/OgreDataStream.h>
 
 namespace Kobold 
 {
-
-/*! Stream used to load file for DefParser */
-class OgreDefStream : public DefStream
-{
-   public:
-      /*! Constructor */
-      OgreDefStream();
-      /*! Destructor */
-      virtual ~OgreDefStream();
-
-      /*! Open the stream (file).
-       * \param fileName name of the file to load
-       * \return true if opened, false if not */
-      virtual bool open(const Kobold::String& fileName);
-
-      /*! \return true if end of file, false if not */
-      virtual bool eof();
-
-      /*! \return line read from the stream */
-      virtual Kobold::String getLine();
-
-      /*! Close the stream */
-      virtual void close();
-
-   private:
-      Ogre::DataStreamPtr fileData; /**< Data for loading file within ogre */
-
-};
 
 class OgreDefParser : public DefParser 
 {

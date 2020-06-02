@@ -82,66 +82,6 @@ const Kobold::String& DefTuple::getKey() const
 
 ///////////////////////////////////////////////////////////////////////////
 //                                                                       //
-//                             DefStreamStd                              //
-//                                                                       //
-///////////////////////////////////////////////////////////////////////////
-
-/***********************************************************************
- *                            Constructor                              *
- ***********************************************************************/
-DefStreamStd::DefStreamStd() 
-{
-}
- 
-/***********************************************************************
- *                             Destructor                              *
- ***********************************************************************/
-DefStreamStd::~DefStreamStd() 
-{
-}
-
-/***********************************************************************
- *                                open                                 *
- ***********************************************************************/
-bool DefStreamStd::open(const Kobold::String& fileName) 
-{
-   fileStream.open(fileName.c_str(), std::ios::in | std::ios::binary);
-   if(!fileStream)
-   {
-      return false;
-   }
-
-   return true;
-}
-
-/***********************************************************************
- *                                eof                                  *
- ***********************************************************************/
-bool DefStreamStd::eof() 
-{
-   return fileStream.eof();
-}
-
-/***********************************************************************
- *                               getLine                               *
- ***********************************************************************/
-Kobold::String DefStreamStd::getLine() 
-{
-   Kobold::String strBuffer;
-   getline(fileStream, strBuffer);
-   return strBuffer;
-}
-
-/***********************************************************************
- *                                close                                *
- ***********************************************************************/
-void DefStreamStd::close() 
-{
-   fileStream.close();
-}
-
-///////////////////////////////////////////////////////////////////////////
-//                                                                       //
 //                               DefParser                               //
 //                                                                       //
 ///////////////////////////////////////////////////////////////////////////
@@ -225,7 +165,7 @@ bool DefParser::getNextTuple(Kobold::String& key, Kobold::String& value)
  ***********************************************************************/
 bool DefParser::load(const Kobold::String& fileName, bool stringFile)
 {
-   DefStreamStd streamStd;
+   DiskFileReader streamStd;
    return load(fileName, stringFile, streamStd);
 }
 
@@ -233,7 +173,7 @@ bool DefParser::load(const Kobold::String& fileName, bool stringFile)
  *                                load                                 *
  ***********************************************************************/
 bool DefParser::load(const Kobold::String& fileName, bool stringFile, 
-            DefStream& stream)
+            FileReader& stream)
 {
    Kobold::String strBuffer, strKey, strData;
    Kobold::String::size_type pos;

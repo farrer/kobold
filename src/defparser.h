@@ -24,7 +24,7 @@
 #include "koboldconfig.h"
 #include "kstring.h"
 #include "list.h"
-#include <fstream>
+#include "filereader.h"
 
 namespace Kobold
 {
@@ -58,56 +58,6 @@ class DefTuple : public ListElement
 
 };
 
-/*! Stream interface used to load file for DefParser */
-class DefStream 
-{
-   public:
-      /*! Destructor */
-      virtual ~DefStream() {};
-
-      /*! Open the stream (file).
-       * \param fileName name of the file to load
-       * \return true if opened, false if not */
-      virtual bool open(const Kobold::String& fileName) = 0;
-
-      /*! \return true if end of file, false if not */
-      virtual bool eof() = 0 ;
-
-      /*! \return line read from the stream */
-      virtual Kobold::String getLine() = 0;
-
-      /*! Close the stream */
-      virtual void close() = 0;
-};
-
-/*! Stream used to load file for DefParser */
-class DefStreamStd : public DefStream
-{
-   public:
-      /*! Constructor */
-      DefStreamStd();
-      /*! Destructor */
-      virtual ~DefStreamStd();
-
-      /*! Open the stream (file).
-       * \param fileName name of the file to load
-       * \return true if opened, false if not */
-      virtual bool open(const Kobold::String& fileName);
-
-      /*! \return true if end of file, false if not */
-      virtual bool eof();
-
-      /*! \return line read from the stream */
-      virtual Kobold::String getLine();
-
-      /*! Close the stream */
-      virtual void close();
-
-   private:
-      std::ifstream fileStream;  /**< File when using std full path */
-
-};
-
 /*! The DefParser class is the implementation of a definitions
  * file parser (those with "key = value"). It generate tuples of 
  * keys and values to be interpreted by the real file interpreter. */
@@ -123,7 +73,6 @@ class DefParser : public List
        * with the same structure. Each time it's called, the old structure
        * is freed and a new one is created with all information loaded. 
        * \param fileName -> file name to load
-       * \param fullPath -> when using fullPath in fileName
        * \param stringFile -> true to load an "string a" = "string b"
        *                       like file (i18n is one of this type). */
       virtual bool load(const Kobold::String& fileName, bool stringFile);
@@ -139,7 +88,7 @@ class DefParser : public List
 
       /*! Load the definition file using a not yet opened stream */
       bool load(const Kobold::String& fileName, bool stringFile, 
-            DefStream& stream);
+            FileReader& stream);
 
       /** Clear and delete all created structures */
       void doClear();

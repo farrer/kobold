@@ -19,72 +19,9 @@
 */
 
 #include "ogredefparser.h"
-#include <OGRE/OgreResourceGroupManager.h>
-#include <OGRE/OgreException.h>
+#include "ogrefilereader.h"
 
 namespace Kobold {
-
-///////////////////////////////////////////////////////////////////////////
-//                                                                       //
-//                            OgreDefStream                              //
-//                                                                       //
-///////////////////////////////////////////////////////////////////////////
-
-/***********************************************************************
- *                            Constructor                              *
- ***********************************************************************/
-OgreDefStream::OgreDefStream() 
-{
-}
- 
-/***********************************************************************
- *                             Destructor                              *
- ***********************************************************************/
-OgreDefStream::~OgreDefStream() 
-{
-}
-
-/***********************************************************************
- *                                open                                 *
- ***********************************************************************/
-bool OgreDefStream::open(const Kobold::String& fileName) 
-{
-   try
-   {
-      fileData = Ogre::ResourceGroupManager::getSingleton().openResource(
-            fileName);
-   }
-   catch(const Ogre::FileNotFoundException&)
-   {
-      return false;
-   }
-
-   return true;
-}
-
-/***********************************************************************
- *                                eof                                  *
- ***********************************************************************/
-bool OgreDefStream::eof() 
-{
-   return fileData->eof();
-}
-
-/***********************************************************************
- *                               getLine                               *
- ***********************************************************************/
-Kobold::String OgreDefStream::getLine() 
-{
-   return fileData->getLine();
-}
-
-/***********************************************************************
- *                                close                                *
- ***********************************************************************/
-void OgreDefStream::close() 
-{
-   fileData->close();
-}
 
 ///////////////////////////////////////////////////////////////////////////
 //                                                                       //
@@ -114,12 +51,12 @@ bool OgreDefParser::load(const Kobold::String& fileName, bool fullPath,
 {
    if(fullPath) 
    {
-      DefStreamStd stream;
+      DiskFileReader stream;
       return DefParser::load(fileName, stringFile, stream);
    }
    else 
    {
-      OgreDefStream stream;
+      OgreFileReader stream;
       return DefParser::load(fileName, stringFile, stream);
    }
 }
