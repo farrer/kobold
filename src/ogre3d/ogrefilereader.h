@@ -39,22 +39,22 @@ class OgreFileReader : public FileReader
       /*! Open the stream (file).
        * \param fileName name of the file to load
        * \return true if opened, false if not */
-      virtual bool open(const Kobold::String& fileName);
+      bool open(const Kobold::String& fileName) override;
 
       /*! \return total file size in bytes */
-      virtual size_t getSize();
+      size_t getSize() override;
 
       /*! \return true if end of file, false if not */
-      virtual bool eof();
+      bool eof() override;
 
       /*! \return line read from the stream */
-      virtual Kobold::String getLine();
+      Kobold::String getLine() override;
 
       /*! Read n bytes to the stream s */
-      virtual void read(char* s, size_t n);
+      void read(char* s, size_t n) override;
 
       /*! Close the stream */
-      virtual void close();
+      void close() override;
 
    private:
       Ogre::DataStreamPtr fileData; /**< Data for loading file within ogre */

@@ -58,7 +58,7 @@ namespace Kobold
          DefaultLog();
          virtual ~DefaultLog();
          /*! Add a message to log, at default normal level */
-         virtual void add(const Kobold::String& message);
+         void add(const Kobold::String& message) override;
    };
 
 
