@@ -31,6 +31,9 @@ class OgreDefParser : public DefParser
    public:
       OgreDefParser();
       virtual ~OgreDefParser();
+      
+
+      bool load(const Kobold::String& fileName, bool stringFile) override;
 
       /*! Load File. Could be called multiple times, for distinct file load
        * with the same structure. Each time it's called, the old structure

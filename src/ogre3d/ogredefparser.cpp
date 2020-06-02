@@ -46,6 +46,14 @@ OgreDefParser::~OgreDefParser()
 /***********************************************************************
  *                                load                                 *
  ***********************************************************************/
+bool OgreDefParser::load(const Kobold::String& fileName, bool stringFile)
+{
+   return load(fileName, false, stringFile);
+}
+
+/***********************************************************************
+ *                                load                                 *
+ ***********************************************************************/
 bool OgreDefParser::load(const Kobold::String& fileName, bool fullPath,
       bool stringFile) 
 {
