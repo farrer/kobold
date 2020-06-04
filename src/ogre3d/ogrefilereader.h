@@ -44,6 +44,12 @@ class OgreFileReader : public FileReader
       /*! \return total file size in bytes */
       size_t getSize() override;
 
+      /*! \return current position */
+      size_t tell() override;
+
+      /*! Seek for an specific position */
+      bool seek(size_t pos) override;
+
       /*! \return true if end of file, false if not */
       bool eof() override;
 
@@ -51,7 +57,7 @@ class OgreFileReader : public FileReader
       Kobold::String getLine() override;
 
       /*! Read n bytes to the stream s */
-      void read(char* s, size_t n) override;
+      bool read(char* s, size_t n) override;
 
       /*! Close the stream */
       void close() override;

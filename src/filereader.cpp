@@ -84,9 +84,35 @@ Kobold::String DiskFileReader::getLine()
 /***********************************************************************
  *                                read                                 *
  ***********************************************************************/
-void DiskFileReader::read(char* s, size_t n)
+bool DiskFileReader::read(char* s, size_t n)
 {
    fileStream.read(s, n);
+   if(fileStream.fail())
+   {
+      return false;
+   }
+   return true;
+}
+
+/***********************************************************************
+ *                                tell                                 *
+ ***********************************************************************/
+size_t DiskFileReader::tell()
+{
+   return fileStream.tellg();
+}
+
+/***********************************************************************
+ *                                seek                                 *
+ ***********************************************************************/
+bool DiskFileReader::seek(size_t pos)
+{
+   fileStream.seekg(pos);
+   if(fileStream.fail())
+   {
+      return false;
+   }
+   return true;
 }
 
 /***********************************************************************

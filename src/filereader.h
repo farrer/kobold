@@ -46,11 +46,17 @@ class FileReader
       /*! \return true if end of file, false if not */
       virtual bool eof() = 0 ;
 
+      /*! \return current position */
+      virtual size_t tell() = 0;
+
+      /*! Seek for an specific position */
+      virtual bool seek(size_t pos) = 0;
+
       /*! \return line read from the stream */
       virtual Kobold::String getLine() = 0;
 
       /*! Read n bytes to the stream s */
-      virtual void read(char* s, size_t n) = 0;
+      virtual bool read(char* s, size_t n) = 0;
 
       /*! Close the stream */
       virtual void close() = 0;
@@ -73,6 +79,12 @@ class DiskFileReader : public FileReader
       /*! \return total file size in bytes */
       size_t getSize() override;
 
+      /*! \return current position */
+      size_t tell() override;
+
+      /*! Seek for an specific position */
+      bool seek(size_t pos) override;
+
       /*! \return true if end of file, false if not */
       bool eof() override;
 
@@ -80,7 +92,7 @@ class DiskFileReader : public FileReader
       Kobold::String getLine() override;
 
       /*! Read n bytes to the stream s */
-      void read(char* s, size_t n) override;
+      bool read(char* s, size_t n) override;
 
       /*! Close the stream */
       void close() override;
