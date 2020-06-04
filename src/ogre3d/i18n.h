@@ -21,7 +21,6 @@
 #ifndef _kobold_i18n_h
 #define _kobold_i18n_h
 
-#include "koboldconfig.h"
 #include "../kstring.h"
 
 namespace Kobold
