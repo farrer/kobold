@@ -57,7 +57,7 @@ class OgreFileReader : public FileReader
       Kobold::String getLine() override;
 
       /*! Read n bytes to the stream s */
-      bool read(char* s, size_t n) override;
+      size_t read(char* s, size_t n) override;
 
       /*! Close the stream */
       void close() override;

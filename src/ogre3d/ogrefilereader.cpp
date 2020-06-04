@@ -102,9 +102,9 @@ Kobold::String OgreFileReader::getLine()
 /***********************************************************************
  *                              read                                   *
  ***********************************************************************/
-bool OgreFileReader::read(char* s, size_t n)
+size_t OgreFileReader::read(char* s, size_t n)
 {
-   return fileData->read(s, n) != 0;
+   return fileData->read(s, n);
 }
 
 

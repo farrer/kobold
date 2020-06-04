@@ -84,14 +84,14 @@ Kobold::String DiskFileReader::getLine()
 /***********************************************************************
  *                                read                                 *
  ***********************************************************************/
-bool DiskFileReader::read(char* s, size_t n)
+size_t DiskFileReader::read(char* s, size_t n)
 {
    fileStream.read(s, n);
    if(fileStream.fail())
    {
-      return false;
+      return 0;
    }
-   return true;
+   return n;
 }
 
 /***********************************************************************

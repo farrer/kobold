@@ -56,7 +56,7 @@ class FileReader
       virtual Kobold::String getLine() = 0;
 
       /*! Read n bytes to the stream s */
-      virtual bool read(char* s, size_t n) = 0;
+      virtual size_t read(char* s, size_t n) = 0;
 
       /*! Close the stream */
       virtual void close() = 0;
@@ -92,7 +92,7 @@ class DiskFileReader : public FileReader
       Kobold::String getLine() override;
 
       /*! Read n bytes to the stream s */
-      bool read(char* s, size_t n) override;
+      size_t read(char* s, size_t n) override;
 
       /*! Close the stream */
       void close() override;
