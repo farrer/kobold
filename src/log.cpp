@@ -120,7 +120,11 @@ void Log::add(const Kobold::String& message)
 {
    if(log->getLogLevel() <= LOG_LEVEL_NORMAL)
    {
-      log->add(message + "\n");
+      log->add(message);
+      if(log->shouldAddLineBreak())
+      {
+         log->add("\n");
+      }
    }
 }
 
@@ -144,7 +148,10 @@ void Log::add(const LogLevel& level, const char* format, ...)
 
       va_end(arg);
 
-      log->add("\n");
+      if(log->shouldAddLineBreak())
+      {
+         log->add("\n");
+      }
    }
 }
 

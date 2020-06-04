@@ -47,6 +47,8 @@ namespace Kobold
          const LogLevel& getLogLevel();
          /*! Add a message to log, at default normal level */
          virtual void add(const Kobold::String& message) = 0;
+         /*! \return if should add line break after the message */
+         virtual bool shouldAddLineBreak() = 0;
       protected:
          LogLevel level; /**< Current log level */
    };
@@ -59,6 +61,7 @@ namespace Kobold
          virtual ~DefaultLog();
          /*! Add a message to log, at default normal level */
          void add(const Kobold::String& message) override;
+         bool shouldAddLineBreak() override { return true; };
    };
 
 

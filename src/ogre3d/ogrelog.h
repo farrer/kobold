@@ -38,6 +38,7 @@ namespace Kobold
          void setLogLevel(const LogLevel& level) override;
          /*! Add a message to log, at default normal level */
          void add(const Kobold::String& message) override;
+         bool shouldAddLineBreak() override { return false; };
 
       private:
          /*! Convert Kobold log level to ogre's */
