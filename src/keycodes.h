@@ -22,6 +22,7 @@
 #define _kobold_keycodes_h
 
 #include "koboldconfig.h"
+#include <SDL2/SDL.h>
 
 namespace Kobold
 {
